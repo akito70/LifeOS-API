@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Alarmas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#111827;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --primary-hover:#0ea5e9;
+  --red:#ef4444;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,sans-serif;
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border-bottom:1px solid var(--border);
+}
+
+.header h1{
+  margin:0;
+  font-size:18px;
+}
+
+.header button{
+  background:none;
+  border:none;
+  color:var(--text);
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* Container */
+.container{
+  padding:16px;
+  max-width:720px;
+  margin:0 auto;
+}
+
+/* Add alarm */
+.add-alarm{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+}
+
+.add-alarm input{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+  font-size:14px;
+}
+
+#alarmName{ flex:2; }
+#alarmTime{ max-width:130px; }
+
+.add-alarm button{
+  padding:12px 16px;
+  border-radius:12px;
+  border:none;
+  background:var(--primary);
+  color:#020617;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.add-alarm button:hover{
+  background:var(--primary-hover);
+}
+
+/* Alarm list */
+.alarm{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.alarm-info{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.alarm-info strong{
+  font-size:15px;
+}
+
+.alarm-info small{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.alarm button{
+  background:none;
+  border:none;
+  font-size:18px;
+  color:var(--red);
+  cursor:pointer;
+}
+
+.alarm button:hover{
+  opacity:.8;
+}
+
+/* Empty state */
+.empty{
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  margin-top:30px;
+}
+
+/* Responsive */
+@media(max-width:600px){
+  .add-alarm{
+    flex-direction:column;
+  }
+
+  #alarmTime{
+    max-width:100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Protección -->
+<script>
+if(localStorage.getItem("lifeos_logged") !== "true"){
+  location.href = "login.html";
+}
+</script>
+
+<div class="header">
+  <button onclick="location.href='index.html'">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <h1>Alarmas</h1>
+  <div></div>
+</div>
+
+<div class="container">
+
+  <div class="add-alarm">
+    <input id="alarmName" placeholder="Nombre de la alarma">
+    <input type="time" id="alarmTime">
+    <button onclick="addAlarm()">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+  </div>
+
+  <div id="alarmList"></div>
+
+</div>
+
+<script>
+let alarms = JSON.parse(localStorage.getItem("lifeos_alarms")) || [];
+
+function save(){
+  localStorage.setItem("lifeos_alarms", JSON.stringify(alarms));
+}
+
+function render(){
+  const list = document.getElementById("alarmList");
+  list.innerHTML = "";
+
+  if(alarms.length === 0){
+    list.innerHTML = `<div class="empty">No hay alarmas registradas</div>`;
+    return;
+  }
+
+  alarms.forEach(a=>{
+    const div = document.createElement("div");
+    div.className = "alarm";
+    div.innerHTML = `
+      <div class="alarm-info">
+        <strong>${a.name}</strong>
+        <small>⏰ ${a.time} · ${a.createdAt}</small>
+      </div>
+      <button onclick="deleteAlarm(${a.id})">
+        <i class="bi bi-trash"></i>
+      </button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function addAlarm(){
+  if(!alarmTime.value) return;
+
+  alarms.push({
+    id: Date.now(),
+    name: alarmName.value.trim() || "Alarma",
+    time: alarmTime.value,
+    createdAt: new Date().toLocaleDateString()
+  });
+
+  alarmName.value = "";
+  alarmTime.value = "";
+  save();
+  render();
+}
+
+function deleteAlarm(id){
+  alarms = alarms.filter(a=>a.id !== id);
+  save();
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>

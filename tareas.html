@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Tareas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#111827;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,sans-serif;
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+}
+
+.header h1{ font-size:18px; margin:0; }
+
+.header button{
+  background:none;
+  border:none;
+  color:var(--text);
+  font-size:20px;
+}
+
+/* Container */
+.container{ padding:16px; }
+
+/* Stats */
+.stats{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.stat{
+  flex:1;
+  background:var(--panel-soft);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+}
+
+.stat strong{
+  font-size:18px;
+  display:block;
+}
+
+/* Add task */
+.add-task{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.add-task input{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+}
+
+#taskInput{ flex:2; }
+#taskTime{ max-width:120px; }
+
+.add-task button{
+  padding:12px 16px;
+  border-radius:12px;
+  border:none;
+  background:var(--primary);
+  color:#020617;
+  font-size:18px;
+}
+
+/* Filters */
+.filters{
+  display:flex;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.filters button{
+  flex:1;
+  padding:8px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+}
+
+.filters button.active{
+  background:var(--primary);
+  color:#020617;
+}
+
+/* Task list */
+.task{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:var(--panel-soft);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
+}
+
+.task.done{
+  opacity:.45;
+  text-decoration:line-through;
+}
+
+.task span{ flex:1; }
+
+.task small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.task .countdown{
+  font-size:12px;
+  margin-top:4px;
+}
+
+.countdown.ok{ color:var(--green); }
+.countdown.warn{ color:#facc15; }
+.countdown.late{ color:var(--red); }
+
+.task button{
+  background:none;
+  border:none;
+  font-size:18px;
+}
+
+.task .delete{ color:var(--red); }
+</style>
+</head>
+<body>
+
+<!-- Protección -->
+<script>
+if(localStorage.getItem("lifeos_logged") !== "true"){
+  location.href = "login.html";
+}
+</script>
+
+<div class="header">
+  <button onclick="location.href='index.html'">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <h1>Tareas</h1>
+  <div></div>
+</div>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><small>Total</small></div>
+    <div class="stat"><strong id="pendingCount">0</strong><small>Pendientes</small></div>
+    <div class="stat"><strong id="doneCount">0</strong><small>Completadas</small></div>
+  </div>
+
+  <div class="add-task">
+    <input id="taskInput" placeholder="Nueva tarea">
+    <input type="time" id="taskTime" title="Hora opcional">
+    <button onclick="addTask()"><i class="bi bi-plus-lg"></i></button>
+  </div>
+
+  <div class="filters">
+    <button class="active" onclick="setFilter('all')">Todas</button>
+    <button onclick="setFilter('pending')">Pendientes</button>
+    <button onclick="setFilter('done')">Completadas</button>
+  </div>
+
+  <div id="taskList"></div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("lifeos_tasks")) || [];
+let filter = "all";
+
+function save(){
+  localStorage.setItem("lifeos_tasks", JSON.stringify(tasks));
+}
+
+function getRemainingTime(task){
+  if(!task.time) return null;
+
+  const [h,m] = task.time.split(":");
+  const now = new Date();
+  const target = new Date();
+  target.setHours(h, m, 0, 0);
+
+  const diff = target - now;
+  return diff;
+}
+
+function formatRemaining(ms){
+  const s = Math.floor(ms/1000);
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  return `${h}h ${m}m ${sec}s`;
+}
+
+function render(){
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  let filtered = tasks.filter(t=>{
+    if(filter==="pending") return !t.done;
+    if(filter==="done") return t.done;
+    return true;
+  });
+
+  filtered.forEach(task=>{
+    const div = document.createElement("div");
+    div.className = "task" + (task.done ? " done":"");
+
+    let countdownHTML = "";
+    const remaining = getRemainingTime(task);
+
+    if(task.time && !task.done){
+      if(remaining > 0){
+        const cls = remaining < 15*60*1000 ? "warn" : "ok";
+        countdownHTML = `<div class="countdown ${cls}">
+          ⏳ ${formatRemaining(remaining)}
+        </div>`;
+      }else{
+        countdownHTML = `<div class="countdown late">
+          ⚠️ Tarea vencida
+        </div>`;
+      }
+    }
+
+    div.innerHTML = `
+      <button onclick="toggleTask(${task.id})">
+        <i class="bi ${task.done?'bi-check-circle-fill':'bi-circle'}"></i>
+      </button>
+      <span>
+        ${task.text}
+        <br><small>${task.createdAt}${task.time ? ` · ⏰ ${task.time}` : ""}</small>
+        ${countdownHTML}
+      </span>
+      <button class="delete" onclick="deleteTask(${task.id})">
+        <i class="bi bi-trash"></i>
+      </button>
+    `;
+
+    list.appendChild(div);
+  });
+
+  document.getElementById("totalCount").textContent = tasks.length;
+  document.getElementById("pendingCount").textContent = tasks.filter(t=>!t.done).length;
+  document.getElementById("doneCount").textContent = tasks.filter(t=>t.done).length;
+}
+
+function addTask(){
+  const text = taskInput.value.trim();
+  const time = taskTime.value || null;
+  if(!text) return;
+
+  tasks.push({
+    id: Date.now(),
+    text,
+    time,
+    done:false,
+    createdAt: new Date().toLocaleDateString()
+  });
+
+  taskInput.value="";
+  taskTime.value="";
+  save();
+  render();
+}
+
+function toggleTask(id){
+  const t = tasks.find(t=>t.id===id);
+  if(t){ t.done = !t.done; save(); render(); }
+}
+
+function deleteTask(id){
+  tasks = tasks.filter(t=>t.id!==id);
+  save();
+  render();
+}
+
+function setFilter(f){
+  filter = f;
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+  render();
+}
+
+// Actualizar temporizadores cada segundo
+setInterval(render,1000);
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Cuentas Seguras</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- CryptoJS para cifrado -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#0e1724;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --primary-hover:#0ea5e9;
+  --red:#ef4444;
+}
+
+*{ box-sizing:border-box; }
+body{ margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); }
+
+/* Header */
+.header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border-bottom:1px solid var(--border);
+}
+.header h1{ font-size:20px; margin:0; }
+.header button{
+  background:none; border:none; color:var(--text); font-size:20px; cursor:pointer;
+}
+
+/* Container */
+.container{ padding:16px; display:grid; gap:20px; }
+
+/* Secciones */
+.section{
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+}
+
+/* Formulario */
+.form-group{
+  display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;
+}
+.form-group input{
+  padding:10px; border-radius:12px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); flex:1;
+}
+.form-group button{
+  padding:10px 16px; border:none; border-radius:12px; background:var(--primary);
+  color:#020617; cursor:pointer;
+}
+.form-group button:hover{ background:var(--primary-hover); }
+
+/* Tabla */
+table{
+  width:100%; border-collapse:collapse; margin-top:12px;
+}
+th, td{ padding:8px; text-align:left; border-bottom:1px solid var(--border); font-size:14px; }
+th{ color:var(--muted); }
+.delete-btn, .copy-btn{
+  background:none; border:none; cursor:pointer; font-size:16px;
+}
+.delete-btn{ color:var(--red); }
+.copy-btn{ color:var(--primary); margin-left:4px; }
+
+/* Responsive */
+@media(max-width:800px){ .form-group{ flex-direction:column; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button onclick="location.href='index.html'"><i class="bi bi-arrow-left"></i></button>
+  <h1>Cuentas Seguras</h1>
+  <div></div>
+</div>
+
+<div class="container">
+
+  <!-- Agregar cuenta -->
+  <div class="section">
+    <h2>Agregar Cuenta/Tarjeta/App</h2>
+    <div class="form-group">
+      <input type="text" id="accountName" placeholder="Nombre (ej. Bampro, Gmail)">
+      <input type="text" id="accountUser" placeholder="Usuario/Email">
+      <input type="text" id="accountPass" placeholder="Contraseña">
+      <button onclick="addAccount()">Agregar</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Nombre</th><th>Usuario</th><th>Contraseña</th><th>Acción</th></tr>
+      </thead>
+      <tbody id="accountsList"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+// Pedir contraseña maestra al iniciar
+let MASTER_KEY = prompt("Introduce tu contraseña maestra para acceder a tus cuentas:");
+if(!MASTER_KEY) alert("Sin contraseña maestra no puedes acceder");
+
+// Variables
+let accounts = [];
+
+// Cargar cuentas cifradas
+function loadAccounts(){
+  const encrypted = localStorage.getItem("secure_accounts");
+  if(encrypted){
+    try{
+      const bytes = CryptoJS.AES.decrypt(encrypted, MASTER_KEY);
+      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+      accounts = JSON.parse(decrypted) || [];
+    }catch(e){
+      alert("Contraseña maestra incorrecta o datos corruptos");
+      accounts = [];
+    }
+  }
+}
+
+// Guardar cuentas cifradas
+function saveAccounts(){
+  const encrypted = CryptoJS.AES.encrypt(JSON.stringify(accounts), MASTER_KEY).toString();
+  localStorage.setItem("secure_accounts", encrypted);
+  renderAccounts();
+}
+
+// Renderizar tabla
+function renderAccounts(){
+  const tbody = document.getElementById("accountsList");
+  tbody.innerHTML="";
+  accounts.slice().reverse().forEach((acc,index)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${acc.name}</td>
+                    <td>${acc.user}</td>
+                    <td>********<button class="copy-btn" onclick="copyPass(${accounts.length-1-index})"><i class="bi bi-clipboard"></i></button></td>
+                    <td><button class="delete-btn" onclick="deleteAccount(${accounts.length-1-index})"><i class="bi bi-trash"></i></button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// Agregar cuenta
+function addAccount(){
+  const name = document.getElementById("accountName").value.trim();
+  const user = document.getElementById("accountUser").value.trim();
+  const pass = document.getElementById("accountPass").value.trim();
+  if(!name || !user || !pass) return alert("Completa todos los campos");
+  accounts.push({name,user,pass});
+  document.getElementById("accountName").value="";
+  document.getElementById("accountUser").value="";
+  document.getElementById("accountPass").value="";
+  saveAccounts();
+}
+
+// Eliminar cuenta
+function deleteAccount(index){
+  if(confirm("¿Eliminar esta cuenta?")){
+    accounts.splice(index,1);
+    saveAccounts();
+  }
+}
+
+// Copiar contraseña al portapapeles
+function copyPass(index){
+  const pass = accounts[index].pass;
+  navigator.clipboard.writeText(pass).then(()=>alert("Contraseña copiada"));
+}
+
+// Inicializar
+loadAccounts();
+renderAccounts();
+</script>
+
+</body>
+</html>

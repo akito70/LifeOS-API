@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Ejercicio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#0e1724;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --green:#22c55e;
+  --yellow:#facc15;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border-bottom:1px solid var(--border);
+}
+
+.back-btn{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--panel-soft);
+  border:1px solid var(--border);
+  color:var(--text);
+  cursor:pointer;
+}
+
+.header h1{
+  font-size:20px;
+  margin:0;
+}
+
+/* LAYOUT */
+.container{
+  padding:16px;
+  display:grid;
+  gap:20px;
+}
+
+.section{
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+
+.section h2{
+  margin:0 0 10px;
+  font-size:18px;
+}
+
+/* INFO */
+.top-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.badge{
+  background:var(--primary);
+  color:#020617;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+}
+
+/* EJERCICIOS */
+.exercise{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  border-radius:12px;
+  margin-bottom:8px;
+  border:1px solid var(--border);
+}
+
+.exercise.active{
+  border-color:var(--primary);
+  background:rgba(56,189,248,.12);
+}
+
+.exercise span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* TIMER */
+.timer{
+  text-align:center;
+  font-size:36px;
+  font-weight:900;
+  margin:12px 0;
+}
+
+.subtimer{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:var(--green);
+  color:#020617;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:active{transform:scale(.98)}
+</style>
+</head>
+<body>
+
+<script>
+if(localStorage.getItem("lifeos_logged")!=="true"){
+  location.href="login.html";
+}
+</script>
+
+<div class="header">
+  <button class="back-btn" onclick="location.href='index.html'">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <h1>Ejercicio</h1>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="top-info">
+      <h2 id="routineTitle"></h2>
+      <span class="badge">60 min</span>
+    </div>
+    <p class="subtimer" id="routineDesc"></p>
+    <p class="subtimer">🔥 Racha actual: <strong id="streak">0</strong> días</p>
+  </div>
+
+  <div class="section">
+    <h2>Rutina de hoy</h2>
+    <div id="exerciseList"></div>
+  </div>
+
+  <div class="section">
+    <h2>Entrenamiento guiado</h2>
+    <div class="timer" id="timer">00:00</div>
+    <div class="subtimer" id="currentExercise"></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <button id="startBtn" onclick="startWorkout()">Iniciar entrenamiento</button>
+      <button id="pauseBtn" onclick="togglePause()" disabled>Pausar</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// NOTIFICACIONES
+if("Notification" in window && Notification.permission!=="granted"){
+  Notification.requestPermission();
+}
+
+function notify(msg){
+  if(Notification.permission==="granted"){
+    new Notification("LifeOS - Ejercicio",{body:msg});
+  }
+}
+
+// RUTINAS
+const routines=[
+{t:"Pecho + Tríceps",d:"Empuje",e:[
+["Flexiones","4x15",300],
+["Press mancuernas","4x12",360],
+["Aperturas","3x12",300],
+["Fondos","3x15",300],
+["Extensión tríceps","3x12",240]
+]},
+{t:"Espalda + Bíceps",d:"Tirón",e:[
+["Remo","4x12",360],
+["Curl bíceps","4x12",300],
+["Martillo","3x12",240],
+["Encogimientos","3x15",240],
+["Isométrico","2x40s",240]
+]},
+{t:"Piernas",d:"Fuerza",e:[
+["Sentadillas","4x20",420],
+["Zancadas","3x12",360],
+["Peso muerto","4x12",360],
+["Talones","4x20",240],
+["Wall sit","2x1m",240]
+]},
+{t:"Hombro + Antebrazo",d:"Definición",e:[
+["Press hombro","4x12",360],
+["Laterales","3x15",300],
+["Frontales","3x12",240],
+["Agarre","4x30s",240],
+["Muñeca","3x20",240]
+]},
+{t:"Core + Cardio",d:"Resistencia",e:[
+["Jumping jacks","4x1m",240],
+["Plancha","3x45s",240],
+["Abs","4x20",300],
+["Climbers","3x40s",240],
+["Burpees","3x12",240]
+]},
+{t:"Full Body",d:"Ligero",e:[
+["Flexiones","3x15",240],
+["Sentadillas","3x20",300],
+["Remo","3x12",240],
+["Curl","3x12",240],
+["Plancha","2x1m",240]
+]}
+];
+
+const day=new Date().getDay();
+const routine = day===0 ? null : routines[(day+6)%7];
+
+if(!routine){
+ document.getElementById("routineTitle").innerText="Descanso activo";
+ document.getElementById("routineDesc").innerText="Camina o estira 20–30 min";
+}else{
+ document.getElementById("routineTitle").innerText=routine.t;
+ document.getElementById("routineDesc").innerText=routine.d;
+}
+
+// Racha
+let streak=Number(localStorage.getItem("lifeos_streak")||0);
+document.getElementById("streak").innerText=streak;
+
+// Render ejercicios + insertar descansos para total = 60 min
+const list=document.getElementById("exerciseList");
+let sessionSequence = []; // cada elemento: {name, label, seconds, type}
+if(routine){
+  // calcular suma de tiempos de ejercicios
+  const exSeconds = routine.e.map(x=>x[2]);
+  const sumEx = exSeconds.reduce((a,b)=>a+b,0);
+  const target = 60*60; // 3600s
+  const gaps = Math.max(0, routine.e.length-1);
+
+  // Nueva lógica solicitada: 1 descanso (~59s) entre ejercicios y aumentar tiempos de ejercicios para llegar a 60min
+  const REST_PER_GAP = 59; // segundos por descanso entre ejercicios
+  let rests = [];
+  if(gaps > 0){
+    for(let g=0; g<gaps; g++) rests.push(REST_PER_GAP);
+  }
+
+  const totalRest = rests.reduce((a,b)=>a+b,0);
+  const availableForExercises = Math.max(0, target - totalRest);
+
+  // Escalar los tiempos de ejercicios proporcionalmente para que la suma sea availableForExercises
+  let scaledExercises = [];
+  if(sumEx > 0){
+    const scale = availableForExercises / sumEx;
+    for(let ex of routine.e){
+      const newSec = Math.max(1, Math.round(ex[2] * scale));
+      scaledExercises.push(newSec);
+    }
+  } else {
+    scaledExercises = routine.e.map(x=>x[2]);
+  }
+
+  // construir la secuencia intercalando ejercicios (con tiempos escalados) y descansos de 59s
+  for(let idx=0; idx<routine.e.length; idx++){
+    const x = routine.e[idx];
+    const seconds = scaledExercises[idx] || x[2];
+    sessionSequence.push({name:x[0], label:x[1], seconds:seconds, type:'exercise'});
+    if(idx < rests.length && rests[idx] > 0){
+      sessionSequence.push({name:'Descanso', label:rests[idx]+'s', seconds:rests[idx], type:'rest'});
+    }
+  }
+
+  // (no hay descansos extra porque ahora asignamos 59s por hueco y escalamos ejercicios)
+
+  // ajustar diferencia por redondeo para que la sesión total sea exactamente target (3600s)
+  let totalSec = sessionSequence.reduce((a,b)=>a+b.seconds,0);
+  const diff = target - totalSec;
+  if(diff !== 0){
+    // encontrar último ejercicio y ajustarlo
+    for(let k=sessionSequence.length-1;k>=0;k--){
+      if(sessionSequence[k].type === 'exercise'){
+        sessionSequence[k].seconds += diff;
+        break;
+      }
+    }
+    totalSec = sessionSequence.reduce((a,b)=>a+b.seconds,0);
+  }
+
+  // renderizar en DOM
+  sessionSequence.forEach((item,sidx)=>{
+    const d=document.createElement('div');
+    d.className = 'exercise' + (item.type==='rest' ? ' rest' : '');
+    d.id = 'ex'+sidx;
+    d.innerHTML = `<strong>${item.name}</strong><span>${item.label}</span>`;
+    list.appendChild(d);
+  });
+
+  // mostrar badge con duración total calculada (exacta)
+  const mins = Math.floor(totalSec/60);
+  document.querySelector('.badge').innerText = mins + ' min';
+
+} 
+
+// Entrenamiento
+let i=0, sec=0, intv;
+let running=false, paused=false;
+
+function startInterval(){
+  intv=setInterval(()=>{
+    sec--;
+    upd();
+    if(sec<=0){
+      const prev = document.getElementById("ex"+i);
+      if(prev) prev.classList.remove("active");
+      i++;
+      if(i>=sessionSequence.length){
+        clearInterval(intv);
+        intv=null;
+        running=false;
+        paused=false;
+        document.getElementById("timer").innerText="✔";
+        document.getElementById("currentExercise").innerText="Completado";
+        document.getElementById('pauseBtn').disabled=true;
+        notify("Entrenamiento finalizado 🔥");
+        saveStreak();
+        return;
+      }
+      const next = sessionSequence[i];
+      notify(next.type==='rest' ? 'Descanso' : ('Siguiente: '+next.name));
+      load();
+    }
+  },1000);
+}
+
+function startWorkout(){
+  if(!routine || running) return;
+  running=true;
+  paused=false;
+  document.getElementById('pauseBtn').disabled=false;
+  document.getElementById('pauseBtn').innerText='Pausar';
+  notify("Entrenamiento iniciado 💪");
+  i=0;
+  load();
+  startInterval();
+}
+
+function togglePause(){
+  if(!running) return;
+  const btn = document.getElementById('pauseBtn');
+  if(!paused){
+    // pause
+    clearInterval(intv);
+    intv=null;
+    paused=true;
+    btn.innerText='Reanudar';
+    const item = sessionSequence[i];
+    document.getElementById('currentExercise').innerText = (item ? item.name : '') + ' (Pausado)';
+  } else {
+    // resume
+    paused=false;
+    btn.innerText='Pausar';
+    const item = sessionSequence[i];
+    document.getElementById('currentExercise').innerText = item ? (item.type==='rest' ? item.name + ' — ' + item.label : item.name) : '';
+    startInterval();
+  }
+}
+
+function load(){
+  const item = sessionSequence[i];
+  if(!item) return;
+  sec = item.seconds;
+  const el = document.getElementById("ex"+i);
+  if(el) el.classList.add("active");
+  document.getElementById("currentExercise").innerText = item.type==='rest' ? item.name + ' — ' + item.label : item.name;
+  upd();
+}
+
+function upd(){
+ const m=String(Math.floor(sec/60)).padStart(2,"0");
+ const s=String(sec%60).padStart(2,"0");
+ document.getElementById("timer").innerText=`${m}:${s}`;
+}
+
+function saveStreak(){
+ const last=localStorage.getItem("lifeos_lastWorkout");
+ const today=new Date().toDateString();
+ if(last!==today){
+  localStorage.setItem("lifeos_lastWorkout",today);
+  streak++;
+  localStorage.setItem("lifeos_streak",streak);
+  document.getElementById("streak").innerText=streak;
+ }
+}
+</script>
+
+</body>
+</html>

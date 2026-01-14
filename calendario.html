@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Calendario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#0b1220;
+  --border:#1e293b;
+  --text:#e5ebea;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:linear-gradient(135deg,#020617,#020617,#0b1220);
+  color:var(--text);
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 20px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border-bottom:1px solid var(--border);
+}
+.header h1{ font-size:20px; margin:0; }
+.header button{
+  background:none;border:none;color:var(--text);font-size:20px;
+}
+
+/* Layout */
+.container{ padding:16px; display:grid; gap:20px; }
+
+.section{
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+.section h2{ margin-top:0; }
+
+/* FORM */
+.form-group{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+input,select,textarea,button{
+  padding:10px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+}
+button{
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:#020617;
+  cursor:pointer;
+}
+
+/* TABLA */
+table{ width:100%; border-collapse:collapse; margin-top:12px; }
+th,td{ padding:8px; border-bottom:1px solid var(--border); font-size:14px; }
+th{ color:var(--muted); }
+
+/* ======= CALENDARIO BONITO ======= */
+
+#calendar{
+  background:linear-gradient(180deg,#0f172a,#020617);
+  border-radius:18px;
+  padding:14px;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+
+/* Header calendario */
+.fc .fc-toolbar{
+  margin-bottom:14px;
+  padding:10px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid var(--border);
+}
+.fc .fc-toolbar-title{
+  font-size:18px;
+  font-weight:600;
+}
+.fc .fc-button{
+  background:#020617;
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:10px;
+}
+.fc .fc-button:hover{
+  background:rgba(56,189,248,.15);
+}
+
+/* Días */
+.fc-theme-standard td,
+.fc-theme-standard th{
+  border-color:var(--border);
+}
+.fc-daygrid-day{
+  transition:.2s;
+}
+.fc-daygrid-day:hover{
+  background:rgba(56,189,248,.06);
+}
+
+/* Día actual */
+.fc-day-today{
+  background:rgba(56,189,248,.15)!important;
+  border-radius:10px;
+}
+
+/* Eventos */
+.fc-event{
+  border-radius:999px;
+  padding:2px 8px;
+  font-size:12px;
+  font-weight:600;
+  border:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+.fc-event-title{
+  color:#020617;
+}
+
+/* Quitar look de tabla */
+.fc-scrollgrid{
+  border-radius:14px;
+  overflow:hidden;
+}
+
+/* Colores categorías */
+.category-color{
+  width:12px;height:12px;border-radius:50%;display:inline-block;
+}
+
+@media(max-width:800px){
+  .form-group{ flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<script>
+if(localStorage.getItem("lifeos_logged")!=="true"){
+  location.href="login.html";
+}
+</script>
+
+<div class="header">
+  <button onclick="location.href='index.html'"><i class="bi bi-arrow-left"></i></button>
+  <h1>Calendario</h1>
+  <div></div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <h2>Agregar Evento</h2>
+    <div class="form-group">
+      <input id="eventTitle" placeholder="Título">
+      <textarea id="eventDesc" placeholder="Descripción" rows="1"></textarea>
+      <input type="date" id="eventDate">
+      <input type="time" id="eventTime">
+      <select id="eventCategory">
+        <option value="Personal">Personal</option>
+        <option value="Trabajo">Trabajo</option>
+        <option value="Finanzas">Finanzas</option>
+        <option value="Salud">Salud</option>
+        <option value="Otros">Otros</option>
+      </select>
+      <button onclick="addEvent()">Agregar</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Fecha</th><th>Hora</th><th>Categoría</th><th>Título</th><th></th></tr>
+      </thead>
+      <tbody id="eventsList"></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Vista Calendario</h2>
+    <div id="calendar"></div>
+  </div>
+
+</div>
+
+<script>
+let events=JSON.parse(localStorage.getItem("lifeos_events"))||[];
+
+const categoryColors={
+  Personal:'#38bdf8',
+  Trabajo:'#facc15',
+  Finanzas:'#ef4444',
+  Salud:'#22c55e',
+  Otros:'#a78bfa'
+};
+
+function save(){
+  localStorage.setItem("lifeos_events",JSON.stringify(events));
+}
+
+function addEvent(){
+  if(!eventTitle.value||!eventDate.value)return;
+  events.push({
+    title:eventTitle.value,
+    desc:eventDesc.value,
+    date:eventDate.value,
+    time:eventTime.value,
+    category:eventCategory.value
+  });
+  save(); renderAll();
+  eventTitle.value=eventDesc.value=eventDate.value=eventTime.value="";
+}
+
+function deleteEvent(i){
+  events.splice(i,1); save(); renderAll();
+}
+
+function renderEventsTable(){
+  eventsList.innerHTML="";
+  events.slice().reverse().forEach((e,i)=>{
+    eventsList.innerHTML+=`
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.time||''}</td>
+        <td><span class="category-color" style="background:${categoryColors[e.category]}"></span> ${e.category}</td>
+        <td>${e.title}</td>
+        <td><button onclick="deleteEvent(${events.length-1-i})">🗑</button></td>
+      </tr>`;
+  });
+}
+
+let calendar;
+function renderCalendar(){
+  if(calendar)calendar.destroy();
+  calendar=new FullCalendar.Calendar(calendarEl,{
+    initialView:'dayGridMonth',
+    height:'auto',
+    events:events.map(e=>({
+      title:e.title,
+      start:e.date+(e.time?'T'+e.time:''),
+      backgroundColor:categoryColors[e.category]
+    }))
+  });
+  calendar.render();
+}
+
+function renderAll(){
+  renderEventsTable();
+  renderCalendar();
+}
+
+const calendarEl=document.getElementById("calendar");
+renderAll();
+</script>
+
+</body>
+</html>

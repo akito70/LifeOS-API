@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>LifeOS - Navegador (Chatbot)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#0f172a;
+  --panel-soft:#0e1724;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --primary-hover:#0ea5e9;
+  --red:#ef4444;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:linear-gradient(135deg,#020617,#0b1220);
+  color:var(--text);
+}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border-bottom:1px solid var(--border);
+}
+.back-btn{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panel-soft);border:1px solid var(--border);
+  color:var(--text);cursor:pointer;
+}
+.header h1{margin:0;font-size:20px}
+
+/* Layout */
+.container{
+  padding:16px;
+  max-width:900px;
+  margin:0 auto;
+  display:grid;
+  gap:16px;
+}
+
+.section{
+  background:linear-gradient(180deg,var(--panel),var(--panel-soft));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+
+/* Chat */
+.chat-box{
+  height:420px;
+  overflow:auto;
+  background:rgba(2,6,23,.65);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+}
+
+.msg{
+  padding:10px 12px;
+  border-radius:14px;
+  margin:8px 0;
+  max-width:85%;
+  white-space:pre-wrap;
+  line-height:1.35;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.user{
+  margin-left:auto;
+  background:rgba(56,189,248,.14);
+}
+.ai{
+  margin-right:auto;
+  background:rgba(148,163,184,.10);
+}
+
+.composer{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.composer input{
+  flex:1;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+}
+.composer button{
+  padding:12px 16px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-hover));
+  color:#020617;
+  font-weight:800;
+  cursor:pointer;
+}
+.tools{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.tools button{
+  flex:1;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+  cursor:pointer;
+}
+.tools button:hover{
+  background:rgba(56,189,248,.10);
+}
+
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<script>
+if(localStorage.getItem("lifeos_logged")!=="true"){
+  location.href="login.html";
+}
+</script>
+
+<div class="header">
+  <button class="back-btn" onclick="location.href='index.html'"><i class="bi bi-arrow-left"></i></button>
+  <h1>Asistente (IA)</h1>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <small>Este chat se conecta a tu servidor local: <b>http://localhost:3000/api/chat</b></small>
+  </div>
+
+  <div class="section">
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="composer">
+      <input id="chatInput" placeholder="Escribe aquí..." />
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <div class="tools">
+      <button onclick="clearChat()"><i class="bi bi-trash"></i> Limpiar</button>
+      <button onclick="quick('Resume mi día')"><i class="bi bi-lightning"></i> Resumen</button>
+      <button onclick="quick('Dame un plan rápido de hoy')"><i class="bi bi-list-check"></i> Plan</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const chatBox = document.getElementById("chatBox");
+const chatInput = document.getElementById("chatInput");
+
+// Historial persistente
+let chatHistory = JSON.parse(localStorage.getItem("lifeos_chat_history") || "[]");
+
+// Render
+function renderChat(){
+  chatBox.innerHTML = "";
+  chatHistory.forEach(m=>{
+    const div = document.createElement("div");
+    div.className = "msg " + (m.role === "user" ? "user" : "ai");
+    div.textContent = m.content;
+    chatBox.appendChild(div);
+  });
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function saveChat(){
+  localStorage.setItem("lifeos_chat_history", JSON.stringify(chatHistory));
+}
+
+async function sendMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  chatHistory.push({ role:"user", content:text });
+  saveChat();
+  renderChat();
+  chatInput.value = "";
+
+  // placeholder “pensando…”
+  chatHistory.push({ role:"assistant", content:"…" });
+  renderChat();
+
+  try{
+    const res = await fetch("http://localhost:3000/api/chat", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ messages: chatHistory.filter(m=>m.content!=="…") })
+    });
+
+    const data = await res.json();
+
+    // reemplazar el "…"
+    chatHistory.pop();
+
+    if(data.error){
+      chatHistory.push({ role:"assistant", content:"Error: " + data.error });
+    }else{
+      chatHistory.push({ role:"assistant", content:data.reply });
+    }
+
+    saveChat();
+    renderChat();
+
+  }catch(e){
+    chatHistory.pop();
+    chatHistory.push({ role:"assistant", content:"No pude conectar con tu servidor. ¿Está corriendo `node server.js`?" });
+    saveChat();
+    renderChat();
+  }
+}
+
+function clearChat(){
+  if(!confirm("¿Borrar el historial del chat?")) return;
+  chatHistory = [];
+  saveChat();
+  renderChat();
+}
+
+function quick(text){
+  chatInput.value = text;
+  sendMessage();
+}
+
+// Enter para enviar
+chatInput.addEventListener("keydown", (e)=>{
+  if(e.key==="Enter") sendMessage();
+});
+
+renderChat();
+</script>
+
+</body>
+</html>
