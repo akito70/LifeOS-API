@@ -202,6 +202,15 @@ if(localStorage.getItem("lifeos_logged") !== "true"){
   <div id="taskList"></div>
 
 </div>
+<script>
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop();
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
+</script>
 
 <script>
 let tasks = JSON.parse(localStorage.getItem("lifeos_tasks")) || [];

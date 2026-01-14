@@ -201,6 +201,15 @@ if(localStorage.getItem("lifeos_logged")!=="true"){
   </div>
 
 </div>
+<script>
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop();
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
+</script>
 
 <script>
 let events=JSON.parse(localStorage.getItem("lifeos_events"))||[];
