@@ -217,14 +217,14 @@ header span{ color:var(--muted); }
 }
 </style>
 </head>
-
 <body>
 
-<!-- ✅ GUARD (al inicio del body) -->
+<!-- ✅ GUARD: si no hay sesión, manda a login -->
 <script>
 (function(){
   if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    sessionStorage.setItem("lifeos_redirect", "index.html");
+    const page = location.pathname.split("/").pop() || "index.html";
+    sessionStorage.setItem("lifeos_redirect", page);
     location.replace("login.html");
   }
 })();
@@ -237,18 +237,17 @@ header span{ color:var(--muted); }
     LifeOS
   </h2>
   <input type="file" id="uploadProfile" accept="image/*" style="display:none;">
-
-  <nav>
-    <a href="index.html" class="active"><i class="bi bi-house-fill"></i> Dashboard</a>
-    <a href="tareas.html"><i class="bi bi-list-check"></i> Tareas</a>
-    <a href="alarmas.html"><i class="bi bi-alarm-fill"></i> Alarmas</a>
-    <a href="calendario.html"><i class="bi bi-calendar-event-fill"></i> Calendario</a>
-    <a href="ejercicio.html"><i class="bi bi-heart-pulse-fill"></i> Ejercicio</a>
-    <a href="finances.html"><i class="bi bi-wallet2"></i> Finanzas</a>
-    <a href="constraseñas.html"><i class="bi bi-key-fill"></i> Contraseñas</a>
-    <a href="musica.html"><i class="bi bi-music-note-beamed"></i> Música</a>
-    <a href="navegador.html"><i class="bi bi-browser-safari"></i> Navegador</a>
-  </nav>
+<nav>
+  <a href="index.html" class="active"><i class="bi bi-house-fill"></i> Dashboard</a>
+  <a href="tareas.html"><i class="bi bi-list-check"></i> Tareas</a>
+  <a href="alarmas.html"><i class="bi bi-alarm-fill"></i> Alarmas</a>
+  <a href="calendario.html"><i class="bi bi-calendar-event-fill"></i> Calendario</a>
+  <a href="ejercicio.html"><i class="bi bi-heart-pulse-fill"></i> Ejercicio</a>
+  <a href="finances.html"><i class="bi bi-wallet2"></i> Finanzas</a>
+  <a href="constraseñas.html"><i class="bi bi-key-fill"></i> Contraseñas</a>
+  <a href="musica.html"><i class="bi bi-music-note-beamed"></i> Música</a>
+  <a href="navegador.html"><i class="bi bi-browser-safari"></i> Navegador</a>
+</nav>
 </aside>
 
 <!-- Main -->
@@ -305,6 +304,7 @@ header span{ color:var(--muted); }
   </div>
 </main>
 
+<!-- Perfil Modal -->
 <div id="profileModal">
   <div class="modal-content">
     <span class="close" id="closeProfile">&times;</span>
@@ -362,6 +362,7 @@ profileBtn.onclick = ()=> profileModal.style.display='flex';
 closeProfile.onclick = ()=> profileModal.style.display='none';
 window.onclick = e => { if(e.target===profileModal) profileModal.style.display='none'; }
 
+// Subir foto de perfil
 const uploadInput = document.getElementById('uploadProfile');
 const profilePic = document.getElementById('profilePic');
 const modalPic = document.getElementById('modalProfilePic');
@@ -380,6 +381,7 @@ uploadInput.addEventListener('change', e=>{
   }
 });
 
+// Cargar foto de perfil guardada
 const savedPic = localStorage.getItem('lifeos_profilePic');
 if(savedPic){ profilePic.src = savedPic; modalPic.src = savedPic; }
 
@@ -391,8 +393,12 @@ function goNewTask(){
   localStorage.setItem("lifeos_focus_task","true");
   location.href = "tareas.html";
 }
-function goNewAlarm(){ location.href = "alarmas.html"; }
-function goNewExpense(){ location.href = "finances.html"; }
+function goNewAlarm(){
+  location.href = "alarmas.html";
+}
+function goNewExpense(){
+  location.href = "finances.html";
+}
 </script>
 
 </body>

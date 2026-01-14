@@ -112,8 +112,7 @@ button:hover{
   <p>Acceso personal</p>
 
   <input type="password" id="pin" placeholder="PIN o contraseña" autocomplete="current-password">
-
-  <button onclick="login()">Entrar</button>
+  <button id="btnLogin">Entrar</button>
 
   <div class="small">
     Este sistema es solo para uso personal
@@ -123,23 +122,19 @@ button:hover{
 <script>
 /*
   CONFIGURACIÓN INICIAL
-  Cambia este PIN cuando quieras
 */
 const DEFAULT_PIN = "1234";
 
 /*
-  Limpieza por si antes usabas localStorage para la sesión
+  Limpieza: si antes guardaste sesión en localStorage, elimínala
 */
 localStorage.removeItem("lifeos_logged");
 
 /*
-  Si ya hay sesión (solo por pestaña), entra directo
+  IMPORTANTE:
+  NO hacemos auto-redirect si ya está logueado.
+  Eso evitó el loop de recarga.
 */
-const redirect = sessionStorage.getItem("lifeos_redirect") || "index.html";
-
-if(sessionStorage.getItem("lifeos_logged") === "true"){
-  window.location.href = redirect;
-}
 
 function login(){
   const pinInput = document.getElementById("pin").value;
@@ -155,6 +150,7 @@ function login(){
     // ✅ sesión por pestaña (se borra al cerrar navegador/pestaña)
     sessionStorage.setItem("lifeos_logged","true");
 
+    // Ir a la página que intentabas abrir
     const go = sessionStorage.getItem("lifeos_redirect") || "index.html";
     sessionStorage.removeItem("lifeos_redirect");
 
@@ -164,7 +160,9 @@ function login(){
   }
 }
 
-// Enter para enviar
+document.getElementById("btnLogin").addEventListener("click", login);
+
+// Enter para entrar
 document.getElementById("pin").addEventListener("keydown", (e)=>{
   if(e.key === "Enter") login();
 });
