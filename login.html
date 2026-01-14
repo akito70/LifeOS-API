@@ -111,7 +111,7 @@ button:hover{
   <h1>LifeOS</h1>
   <p>Acceso personal</p>
 
-  <input type="password" id="pin" placeholder="PIN o contraseña">
+  <input type="password" id="pin" placeholder="PIN o contraseña" autocomplete="current-password">
 
   <button onclick="login()">Entrar</button>
 
@@ -128,10 +128,12 @@ button:hover{
 const DEFAULT_PIN = "1234";
 
 /*
-  Si ya hay sesión activa, entra directo
+  Si ya hay sesión activa, entra directo a la página que venías
 */
+const redirect = localStorage.getItem("lifeos_redirect") || "index.html";
+
 if(localStorage.getItem("lifeos_logged") === "true"){
-  window.location.href = "index.html";
+  window.location.href = redirect;
 }
 
 function login(){
@@ -146,11 +148,21 @@ function login(){
 
   if(pinInput === savedPin){
     localStorage.setItem("lifeos_logged","true");
-    window.location.href = "index.html";
+
+    // Ir a la página que intentabas abrir
+    const go = localStorage.getItem("lifeos_redirect") || "index.html";
+    localStorage.removeItem("lifeos_redirect");
+
+    window.location.href = go;
   }else{
     alert("PIN incorrecto");
   }
 }
+
+// (Opcional) Enter para enviar
+document.getElementById("pin").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") login();
+});
 </script>
 
 </body>

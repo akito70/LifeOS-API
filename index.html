@@ -16,8 +16,8 @@
   --border:#1e293b;
   --text:#e5e7eb;
   --muted:#94a3b8;
-  --primary:#38bdf8; /* celeste original */
-  --primary-hover:#0ea5e9; /* celeste hover original */
+  --primary:#38bdf8;
+  --primary-hover:#0ea5e9;
   --green:#22c55e;
   --yellow:#facc15;
   --red:#ef4444;
@@ -209,7 +209,6 @@ header span{ color:var(--muted); }
   body{ flex-direction:column; }
   aside{ width:100%; border-right:none; border-bottom:1px solid var(--border); }
   main{ padding:14px; }
-  /* Mantener 3 columnas en móvil (app móvil) */
   nav{ grid-template-columns: repeat(3, 1fr); }
   nav a{ padding:8px 6px; font-size:14px; justify-content:center; }
   .mini-widgets{ grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
@@ -227,44 +226,17 @@ header span{ color:var(--muted); }
     LifeOS
   </h2>
   <input type="file" id="uploadProfile" accept="image/*" style="display:none;">
-<nav>
-  <a href="index.html" class="active">
-    <i class="bi bi-house-fill"></i> Dashboard
-  </a>
-
-  <a href="tareas.html">
-    <i class="bi bi-list-check"></i> Tareas
-  </a>
-
-  <a href="alarmas.html">
-    <i class="bi bi-alarm-fill"></i> Alarmas
-  </a>
-
-  <a href="calendario.html">
-    <i class="bi bi-calendar-event-fill"></i> Calendario
-  </a>
-
-  <a href="ejercicio.html">
-    <i class="bi bi-heart-pulse-fill"></i> Ejercicio
-  </a>
-
-  <a href="finances.html">
-    <i class="bi bi-wallet2"></i> Finanzas
-  </a>
-
-  <a href="constraseñas.html">
-    <i class="bi bi-key-fill"></i> Contraseñas
-  </a>
-
-  <a href="musica.html">
-    <i class="bi bi-music-note-beamed"></i> Música
-  </a>
-
-  <a href="navegador.html">
-    <i class="bi bi-browser-safari"></i> Navegador
-  </a>
-</nav>
-
+  <nav>
+    <a href="index.html" class="active"><i class="bi bi-house-fill"></i> Dashboard</a>
+    <a href="tareas.html"><i class="bi bi-list-check"></i> Tareas</a>
+    <a href="alarmas.html"><i class="bi bi-alarm-fill"></i> Alarmas</a>
+    <a href="calendario.html"><i class="bi bi-calendar-event-fill"></i> Calendario</a>
+    <a href="ejercicio.html"><i class="bi bi-heart-pulse-fill"></i> Ejercicio</a>
+    <a href="finances.html"><i class="bi bi-wallet2"></i> Finanzas</a>
+    <a href="constraseñas.html"><i class="bi bi-key-fill"></i> Contraseñas</a>
+    <a href="musica.html"><i class="bi bi-music-note-beamed"></i> Música</a>
+    <a href="navegador.html"><i class="bi bi-browser-safari"></i> Navegador</a>
+  </nav>
 </aside>
 
 <!-- Main -->
@@ -274,7 +246,6 @@ header span{ color:var(--muted); }
     <span id="fecha"></span>
   </header>
 
-  <!-- Mini widgets -->
   <section class="mini-widgets">
     <div class="widget">
       <h4><i class="bi bi-bell-fill"></i> Próxima Alarma</h4>
@@ -290,7 +261,6 @@ header span{ color:var(--muted); }
     </div>
   </section>
 
-  <!-- Dashboard Cards -->
   <section class="cards">
     <div class="card">
       <h3><i class="bi bi-list-check"></i> Tareas</h3>
@@ -311,31 +281,18 @@ header span{ color:var(--muted); }
     </div>
   </section>
 
-  <!-- Shortcuts -->
-<div class="shortcuts">
-  <button onclick="goNewTask()">
-    <i class="bi bi-plus-circle"></i> Nueva Tarea
-  </button>
+  <div class="shortcuts">
+    <button onclick="goNewTask()"><i class="bi bi-plus-circle"></i> Nueva Tarea</button>
+    <button onclick="goNewAlarm()"><i class="bi bi-alarm-fill"></i> Nueva Alarma</button>
+    <button onclick="goNewExpense()"><i class="bi bi-currency-dollar"></i> Registrar Gasto</button>
+  </div>
 
-  <button onclick="goNewAlarm()">
-    <i class="bi bi-alarm-fill"></i> Nueva Alarma
-  </button>
-
-  <button onclick="goNewExpense()">
-    <i class="bi bi-currency-dollar"></i> Registrar Gasto
-  </button>
-</div>
-
-  <!-- Actividad reciente -->
   <div class="activity-feed">
     <h4><i class="bi bi-clock-history"></i> Actividad Reciente</h4>
-    <ul id="activityFeed">
-      <li>—</li>
-    </ul>
+    <ul id="activityFeed"><li>—</li></ul>
   </div>
 </main>
 
-<!-- Perfil Modal -->
 <div id="profileModal">
   <div class="modal-content">
     <span class="close" id="closeProfile">&times;</span>
@@ -343,8 +300,28 @@ header span{ color:var(--muted); }
     <h3 id="profileName">Usuario</h3>
     <p id="profileEmail">usuario@lifeos.com</p>
     <button onclick="alert('Abrir configuraciones')">Configuraciones</button>
+<button onclick="logout()" style="margin-top:10px; background:#ef4444; color:#020617;">Cerrar sesión</button>
+
   </div>
 </div>
+
+<!-- ✅ GUARD DE LOGIN (este va antes de todo tu JS) -->
+<script>
+(function(){
+  if (localStorage.getItem("lifeos_logged") !== "true") {
+    localStorage.setItem("lifeos_redirect", "index.html");
+    location.replace("login.html");
+  }
+})();
+
+function logout(){
+  localStorage.removeItem("lifeos_logged");
+  localStorage.removeItem("lifeos_redirect");
+  location.href = "login.html";
+}
+
+</script>
+
 
 <script>
 // Fecha
@@ -358,7 +335,6 @@ let alarms = JSON.parse(localStorage.getItem("lifeos_alarms") || "[]");
 let balance = parseFloat(localStorage.getItem("lifeos_balance") || 0);
 let musicPlaying = false;
 
-// Actualizar contadores de tareas
 function updateTaskWidget(){
   tasks = JSON.parse(localStorage.getItem("lifeos_tasks") || "[]");
   const pending = tasks.filter(t=>!t.done).length;
@@ -367,22 +343,18 @@ function updateTaskWidget(){
   document.getElementById('taskCount').textContent = `${pending} / ${total}`;
 }
 
-// Inicial
 updateTaskWidget();
 
-// Escuchar cambios de localStorage
 window.addEventListener('storage', (e)=>{
   if(e.key==='lifeos_tasks') updateTaskWidget();
 });
 
-// Otros widgets
 document.getElementById('alarmCount').textContent = alarms.length;
 document.getElementById('balanceCount').textContent = `$${balance.toFixed(2)}`;
 document.getElementById('musicStatus').textContent = musicPlaying?'Reproduciendo':'Detenido';
 document.getElementById('nextAlarm').textContent = alarms[0]?.time || '—';
 document.getElementById('weekProgress').textContent = '50%';
 
-// Actividad reciente
 const activityFeed = document.getElementById('activityFeed');
 activityFeed.innerHTML = `
   <li>Tarea completada</li>
@@ -390,7 +362,6 @@ activityFeed.innerHTML = `
   <li>Nuevo gasto registrado</li>
 `;
 
-// Perfil Modal
 const profileBtn = document.getElementById('profileBtn');
 const profileModal = document.getElementById('profileModal');
 const closeProfile = document.getElementById('closeProfile');
@@ -399,7 +370,6 @@ profileBtn.onclick = ()=> profileModal.style.display='flex';
 closeProfile.onclick = ()=> profileModal.style.display='none';
 window.onclick = e => { if(e.target===profileModal) profileModal.style.display='none'; }
 
-// Subir foto de perfil
 const uploadInput = document.getElementById('uploadProfile');
 const profilePic = document.getElementById('profilePic');
 const modalPic = document.getElementById('modalProfilePic');
@@ -418,34 +388,20 @@ uploadInput.addEventListener('change', e=>{
   }
 });
 
-// Cargar foto de perfil guardada
 const savedPic = localStorage.getItem('lifeos_profilePic');
 if(savedPic){ profilePic.src = savedPic; modalPic.src = savedPic; }
-</script>
 
-<script>
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    updateTaskWidget();
-  }
+  if (!document.hidden) updateTaskWidget();
 });
-</script>
-<script>
+
 function goNewTask(){
-  // bandera para enfocar input
   localStorage.setItem("lifeos_focus_task","true");
   location.href = "tareas.html";
 }
-
-function goNewAlarm(){
-  location.href = "alarmas.html";
-}
-
-function goNewExpense(){
-  location.href = "finances.html";
-}
+function goNewAlarm(){ location.href = "alarmas.html"; }
+function goNewExpense(){ location.href = "finances.html"; }
 </script>
-
 
 </body>
 </html>
