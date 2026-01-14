@@ -132,21 +132,18 @@ body{
 small{color:var(--muted)}
 </style>
 </head>
+
 <body>
+
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
 <script>
 (function(){
   if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
+    const page = location.pathname.split("/").pop() || "index.html";
     sessionStorage.setItem("lifeos_redirect", page);
     location.replace("login.html");
   }
 })();
-</script>
-
-<script>
-if(localStorage.getItem("lifeos_logged")!=="true"){
-  location.href="login.html";
-}
 </script>
 
 <div class="header">
@@ -158,7 +155,6 @@ if(localStorage.getItem("lifeos_logged")!=="true"){
 
   <div class="section">
     <small>Este chat se conecta a: <b>https://lifeos-api-y7b8.onrender.com/api/chat</b></small>
-
   </div>
 
   <div class="section">
@@ -216,7 +212,6 @@ async function sendMessage(){
 
   try{
     const res = await fetch("https://lifeos-api-y7b8.onrender.com/api/chat", {
-
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ messages: chatHistory.filter(m=>m.content!=="…") })
@@ -238,7 +233,7 @@ async function sendMessage(){
 
   }catch(e){
     chatHistory.pop();
-    chatHistory.push({ role:"assistant", content:"No pude conectar con tu servidor. ¿Está corriendo `node server.js`?" });
+    chatHistory.push({ role:"assistant", content:"No pude conectar con tu servidor." });
     saveChat();
     renderChat();
   }

@@ -155,12 +155,18 @@ th{ color:var(--muted); }
 }
 </style>
 </head>
+
 <body>
 
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
 <script>
-if(localStorage.getItem("lifeos_logged")!=="true"){
-  location.href="login.html";
-}
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop() || "index.html";
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
 </script>
 
 <div class="header">
@@ -201,20 +207,11 @@ if(localStorage.getItem("lifeos_logged")!=="true"){
   </div>
 
 </div>
-<script>
-(function(){
-  if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
-    sessionStorage.setItem("lifeos_redirect", page);
-    location.replace("login.html");
-  }
-})();
-</script>
 
 <script>
-let events=JSON.parse(localStorage.getItem("lifeos_events"))||[];
+let events = JSON.parse(localStorage.getItem("lifeos_events")) || [];
 
-const categoryColors={
+const categoryColors = {
   Personal:'#38bdf8',
   Trabajo:'#facc15',
   Finanzas:'#ef4444',
@@ -223,33 +220,41 @@ const categoryColors={
 };
 
 function save(){
-  localStorage.setItem("lifeos_events",JSON.stringify(events));
+  localStorage.setItem("lifeos_events", JSON.stringify(events));
 }
 
 function addEvent(){
-  if(!eventTitle.value||!eventDate.value)return;
+  if(!eventTitle.value || !eventDate.value) return;
+
   events.push({
-    title:eventTitle.value,
-    desc:eventDesc.value,
-    date:eventDate.value,
-    time:eventTime.value,
-    category:eventCategory.value
+    title: eventTitle.value,
+    desc: eventDesc.value,
+    date: eventDate.value,
+    time: eventTime.value,
+    category: eventCategory.value
   });
-  save(); renderAll();
-  eventTitle.value=eventDesc.value=eventDate.value=eventTime.value="";
+
+  save();
+  renderAll();
+  eventTitle.value = "";
+  eventDesc.value = "";
+  eventDate.value = "";
+  eventTime.value = "";
 }
 
 function deleteEvent(i){
-  events.splice(i,1); save(); renderAll();
+  events.splice(i,1);
+  save();
+  renderAll();
 }
 
 function renderEventsTable(){
-  eventsList.innerHTML="";
+  eventsList.innerHTML = "";
   events.slice().reverse().forEach((e,i)=>{
-    eventsList.innerHTML+=`
+    eventsList.innerHTML += `
       <tr>
         <td>${e.date}</td>
-        <td>${e.time||''}</td>
+        <td>${e.time || ''}</td>
         <td><span class="category-color" style="background:${categoryColors[e.category]}"></span> ${e.category}</td>
         <td>${e.title}</td>
         <td><button onclick="deleteEvent(${events.length-1-i})">🗑</button></td>
@@ -259,14 +264,14 @@ function renderEventsTable(){
 
 let calendar;
 function renderCalendar(){
-  if(calendar)calendar.destroy();
-  calendar=new FullCalendar.Calendar(calendarEl,{
+  if(calendar) calendar.destroy();
+  calendar = new FullCalendar.Calendar(calendarEl, {
     initialView:'dayGridMonth',
     height:'auto',
-    events:events.map(e=>({
-      title:e.title,
-      start:e.date+(e.time?'T'+e.time:''),
-      backgroundColor:categoryColors[e.category]
+    events: events.map(e => ({
+      title: e.title,
+      start: e.date + (e.time ? 'T' + e.time : ''),
+      backgroundColor: categoryColors[e.category]
     }))
   });
   calendar.render();
@@ -277,7 +282,7 @@ function renderAll(){
   renderCalendar();
 }
 
-const calendarEl=document.getElementById("calendar");
+const calendarEl = document.getElementById("calendar");
 renderAll();
 </script>
 

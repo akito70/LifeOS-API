@@ -80,7 +80,19 @@ th{ color:var(--muted); }
 @media(max-width:800px){ .form-group{ flex-direction:column; } }
 </style>
 </head>
+
 <body>
+
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
+<script>
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop() || "index.html";
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
+</script>
 
 <div class="header">
   <button onclick="location.href='index.html'"><i class="bi bi-arrow-left"></i></button>
@@ -109,20 +121,13 @@ th{ color:var(--muted); }
   </div>
 
 </div>
-<script>
-(function(){
-  if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
-    sessionStorage.setItem("lifeos_redirect", page);
-    location.replace("login.html");
-  }
-})();
-</script>
 
 <script>
-// Pedir contraseña maestra al iniciar
+// Pedir contraseña maestra al iniciar (ya estás logueado a este punto)
 let MASTER_KEY = prompt("Introduce tu contraseña maestra para acceder a tus cuentas:");
-if(!MASTER_KEY) alert("Sin contraseña maestra no puedes acceder");
+if(!MASTER_KEY){
+  alert("Sin contraseña maestra no puedes acceder");
+}
 
 // Variables
 let accounts = [];
@@ -152,13 +157,22 @@ function saveAccounts(){
 // Renderizar tabla
 function renderAccounts(){
   const tbody = document.getElementById("accountsList");
-  tbody.innerHTML="";
+  tbody.innerHTML = "";
   accounts.slice().reverse().forEach((acc,index)=>{
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${acc.name}</td>
-                    <td>${acc.user}</td>
-                    <td>********<button class="copy-btn" onclick="copyPass(${accounts.length-1-index})"><i class="bi bi-clipboard"></i></button></td>
-                    <td><button class="delete-btn" onclick="deleteAccount(${accounts.length-1-index})"><i class="bi bi-trash"></i></button></td>`;
+    tr.innerHTML = `
+      <td>${acc.name}</td>
+      <td>${acc.user}</td>
+      <td>********
+        <button class="copy-btn" onclick="copyPass(${accounts.length-1-index})">
+          <i class="bi bi-clipboard"></i>
+        </button>
+      </td>
+      <td>
+        <button class="delete-btn" onclick="deleteAccount(${accounts.length-1-index})">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>`;
     tbody.appendChild(tr);
   });
 }
@@ -169,10 +183,11 @@ function addAccount(){
   const user = document.getElementById("accountUser").value.trim();
   const pass = document.getElementById("accountPass").value.trim();
   if(!name || !user || !pass) return alert("Completa todos los campos");
+
   accounts.push({name,user,pass});
-  document.getElementById("accountName").value="";
-  document.getElementById("accountUser").value="";
-  document.getElementById("accountPass").value="";
+  document.getElementById("accountName").value = "";
+  document.getElementById("accountUser").value = "";
+  document.getElementById("accountPass").value = "";
   saveAccounts();
 }
 

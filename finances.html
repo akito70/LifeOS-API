@@ -149,21 +149,18 @@ th{ color:var(--muted); }
 }
 </style>
 </head>
+
 <body>
+
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
 <script>
 (function(){
   if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
+    const page = location.pathname.split("/").pop() || "index.html";
     sessionStorage.setItem("lifeos_redirect", page);
     location.replace("login.html");
   }
 })();
-</script>
-
-<script>
-if(localStorage.getItem("lifeos_logged") !== "true"){
-  location.href="login.html";
-}
 </script>
 
 <div class="header">
@@ -277,21 +274,22 @@ function updateAccountSelect(){
 function calculateTotals(){
   let cashUSD=0, cashC=0;
   let accUSD=0, accC=0;
-  
+
   movements.forEach(m=>{
     if(m.account==='cash'){
       if(m.currency==='USD' && (m.type==='income'||m.type==='saving')) cashUSD+=m.amount;
       else if(m.currency==='USD') cashUSD-=m.amount;
+
       if(m.currency==='C' && (m.type==='income'||m.type==='saving')) cashC+=m.amount;
       else if(m.currency==='C') cashC-=m.amount;
     }
   });
-  
+
   accounts.forEach(a=>{
     if(a.currency==='USD') accUSD+=a.balance;
     else accC+=a.balance;
   });
-  
+
   document.getElementById("totalCash").textContent = `$${cashUSD.toFixed(2)} / C$${cashC.toFixed(2)}`;
   document.getElementById("totalAccounts").textContent = `$${accUSD.toFixed(2)} / C$${accC.toFixed(2)}`;
 }
@@ -366,9 +364,8 @@ function renderCharts(){
   movements.forEach(m=>{
     const key = `${m.category} (${m.type})`;
     if(!totalsMap[key]) totalsMap[key]=0;
-    if(m.type==='income'||m.type==='saving') totalsMap[key]+=m.amount;
-    else totalsMap[key]+=m.amount; // gastos siguen sumando pero color rojo
-    colorsMap[key]=(m.type==='income'||m.type==='saving') ? categoryColors[m.category] : 'var(--expense)';
+    totalsMap[key] += m.amount;
+    colorsMap[key] = (m.type==='income'||m.type==='saving') ? categoryColors[m.category] : 'var(--expense)';
   });
 
   const labels = Object.keys(totalsMap);
@@ -376,13 +373,13 @@ function renderCharts(){
   const colors = labels.map(l=>colorsMap[l]);
 
   if(pieChart) pieChart.destroy();
-  pieChart=new Chart(document.getElementById("pieChart").getContext("2d"),{
+  pieChart = new Chart(document.getElementById("pieChart").getContext("2d"),{
     type:'pie',
     data:{ labels, datasets:[{ data, backgroundColor:colors }] }
   });
 
   if(barChart) barChart.destroy();
-  barChart=new Chart(document.getElementById("barChart").getContext("2d"),{
+  barChart = new Chart(document.getElementById("barChart").getContext("2d"),{
     type:'bar',
     data:{ labels, datasets:[{ label:'Gastos/Ingresos', data, backgroundColor:colors }] },
     options:{ scales:{ y:{ beginAtZero:true } } }

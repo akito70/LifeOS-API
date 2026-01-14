@@ -143,12 +143,18 @@ button{
 button:active{transform:scale(.98)}
 </style>
 </head>
+
 <body>
 
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
 <script>
-if(localStorage.getItem("lifeos_logged")!=="true"){
-  location.href="login.html";
-}
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop() || "index.html";
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
 </script>
 
 <div class="header">
@@ -185,16 +191,6 @@ if(localStorage.getItem("lifeos_logged")!=="true"){
   </div>
 
 </div>
-<script>
-(function(){
-  if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
-    sessionStorage.setItem("lifeos_redirect", page);
-    location.replace("login.html");
-  }
-})();
-</script>
-
 
 <script>
 // NOTIFICACIONES
@@ -271,25 +267,21 @@ document.getElementById("streak").innerText=streak;
 
 // Render ejercicios + insertar descansos para total = 60 min
 const list=document.getElementById("exerciseList");
-let sessionSequence = []; // cada elemento: {name, label, seconds, type}
+let sessionSequence = []; // {name, label, seconds, type}
+
 if(routine){
-  // calcular suma de tiempos de ejercicios
   const exSeconds = routine.e.map(x=>x[2]);
   const sumEx = exSeconds.reduce((a,b)=>a+b,0);
   const target = 60*60; // 3600s
   const gaps = Math.max(0, routine.e.length-1);
 
-  // Nueva lógica solicitada: 1 descanso (~59s) entre ejercicios y aumentar tiempos de ejercicios para llegar a 60min
-  const REST_PER_GAP = 59; // segundos por descanso entre ejercicios
+  const REST_PER_GAP = 59;
   let rests = [];
-  if(gaps > 0){
-    for(let g=0; g<gaps; g++) rests.push(REST_PER_GAP);
-  }
+  for(let g=0; g<gaps; g++) rests.push(REST_PER_GAP);
 
   const totalRest = rests.reduce((a,b)=>a+b,0);
   const availableForExercises = Math.max(0, target - totalRest);
 
-  // Escalar los tiempos de ejercicios proporcionalmente para que la suma sea availableForExercises
   let scaledExercises = [];
   if(sumEx > 0){
     const scale = availableForExercises / sumEx;
@@ -301,23 +293,18 @@ if(routine){
     scaledExercises = routine.e.map(x=>x[2]);
   }
 
-  // construir la secuencia intercalando ejercicios (con tiempos escalados) y descansos de 59s
   for(let idx=0; idx<routine.e.length; idx++){
     const x = routine.e[idx];
     const seconds = scaledExercises[idx] || x[2];
     sessionSequence.push({name:x[0], label:x[1], seconds:seconds, type:'exercise'});
-    if(idx < rests.length && rests[idx] > 0){
+    if(idx < rests.length){
       sessionSequence.push({name:'Descanso', label:rests[idx]+'s', seconds:rests[idx], type:'rest'});
     }
   }
 
-  // (no hay descansos extra porque ahora asignamos 59s por hueco y escalamos ejercicios)
-
-  // ajustar diferencia por redondeo para que la sesión total sea exactamente target (3600s)
   let totalSec = sessionSequence.reduce((a,b)=>a+b.seconds,0);
   const diff = target - totalSec;
   if(diff !== 0){
-    // encontrar último ejercicio y ajustarlo
     for(let k=sessionSequence.length-1;k>=0;k--){
       if(sessionSequence[k].type === 'exercise'){
         sessionSequence[k].seconds += diff;
@@ -327,7 +314,6 @@ if(routine){
     totalSec = sessionSequence.reduce((a,b)=>a+b.seconds,0);
   }
 
-  // renderizar en DOM
   sessionSequence.forEach((item,sidx)=>{
     const d=document.createElement('div');
     d.className = 'exercise' + (item.type==='rest' ? ' rest' : '');
@@ -336,11 +322,9 @@ if(routine){
     list.appendChild(d);
   });
 
-  // mostrar badge con duración total calculada (exacta)
   const mins = Math.floor(totalSec/60);
   document.querySelector('.badge').innerText = mins + ' min';
-
-} 
+}
 
 // Entrenamiento
 let i=0, sec=0, intv;
@@ -353,6 +337,7 @@ function startInterval(){
     if(sec<=0){
       const prev = document.getElementById("ex"+i);
       if(prev) prev.classList.remove("active");
+
       i++;
       if(i>=sessionSequence.length){
         clearInterval(intv);
@@ -366,6 +351,7 @@ function startInterval(){
         saveStreak();
         return;
       }
+
       const next = sessionSequence[i];
       notify(next.type==='rest' ? 'Descanso' : ('Siguiente: '+next.name));
       load();
@@ -388,8 +374,8 @@ function startWorkout(){
 function togglePause(){
   if(!running) return;
   const btn = document.getElementById('pauseBtn');
+
   if(!paused){
-    // pause
     clearInterval(intv);
     intv=null;
     paused=true;
@@ -397,7 +383,6 @@ function togglePause(){
     const item = sessionSequence[i];
     document.getElementById('currentExercise').innerText = (item ? item.name : '') + ' (Pausado)';
   } else {
-    // resume
     paused=false;
     btn.innerText='Pausar';
     const item = sessionSequence[i];

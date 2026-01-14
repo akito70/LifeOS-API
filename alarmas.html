@@ -155,13 +155,18 @@ body{
 }
 </style>
 </head>
+
 <body>
 
-<!-- Protección -->
+<!-- ✅ Protección (solo sessionStorage, una vez por pestaña) -->
 <script>
-if(localStorage.getItem("lifeos_logged") !== "true"){
-  location.href = "login.html";
-}
+(function(){
+  if (sessionStorage.getItem("lifeos_logged") !== "true") {
+    const page = location.pathname.split("/").pop() || "index.html";
+    sessionStorage.setItem("lifeos_redirect", page);
+    location.replace("login.html");
+  }
+})();
 </script>
 
 <div class="header">
@@ -185,16 +190,6 @@ if(localStorage.getItem("lifeos_logged") !== "true"){
   <div id="alarmList"></div>
 
 </div>
-<script>
-(function(){
-  if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop();
-    sessionStorage.setItem("lifeos_redirect", page);
-    location.replace("login.html");
-  }
-})();
-</script>
-
 
 <script>
 let alarms = JSON.parse(localStorage.getItem("lifeos_alarms")) || [];
