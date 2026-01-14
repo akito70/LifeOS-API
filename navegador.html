@@ -148,7 +148,8 @@ if(localStorage.getItem("lifeos_logged")!=="true"){
 <div class="container">
 
   <div class="section">
-    <small>Este chat se conecta a tu servidor local: <b>http://localhost:3000/api/chat</b></small>
+    <small>Este chat se conecta a: <b>https://lifeos-api-y7b8.onrender.com/api/chat</b></small>
+
   </div>
 
   <div class="section">
@@ -205,7 +206,8 @@ async function sendMessage(){
   renderChat();
 
   try{
-    const res = await fetch("http://localhost:3000/api/chat", {
+    const res = await fetch("https://lifeos-api-y7b8.onrender.com/api/chat", {
+
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ messages: chatHistory.filter(m=>m.content!=="…") })
