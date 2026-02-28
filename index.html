@@ -2,210 +2,258 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Green Health</title>
 
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 body{
-  margin:0;height:100vh;overflow:hidden;
+  margin:0;
+  height:100vh;
   background:linear-gradient(160deg,#74c69d,#40916c);
 }
-.screen{display:none;height:100vh;padding:20px}
-.screen.active{display:flex;flex-direction:column}
-h1,h2{text-align:center}
+.screen{
+  display:none;
+  height:100vh;
+  padding:20px;
+}
+.screen.active{
+  display:flex;
+  flex-direction:column;
+}
+h1,h2{text-align:center;color:#1b4332}
 input,select,button{
-  width:100%;padding:12px;margin-bottom:10px;
-  border-radius:14px;border:none;font-size:16px
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
 }
 button{
   background:linear-gradient(145deg,#2d6a4f,#1b4332);
-  color:#fff;font-weight:bold
+  color:#fff;
+  font-weight:bold;
 }
 .card{
-  background:linear-gradient(145deg,#fff,#e9f5ee);
-  border-radius:20px;padding:15px;margin-bottom:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,.2)
+  background:#ffffff;
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
 }
 #app{overflow-y:auto}
-header{text-align:center;font-weight:bold;margin-bottom:10px}
 #plant{text-align:center;font-size:70px}
-canvas{width:100%;background:#fff;border-radius:14px}
-ul{padding-left:18px} li{margin-bottom:6px}
+canvas{
+  width:100%;
+  height:180px;
+  background:#f1f1f1;
+  border-radius:14px;
+}
+ul{padding-left:18px}
+li{margin-bottom:6px}
+label{display:flex;gap:8px;align-items:center}
+.motivation{text-align:center;font-style:italic;color:#2d6a4f}
+header{text-align:center;font-weight:bold;margin-bottom:10px}
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<section id="login" class="screen active">
-<h1>🌱 Green Health</h1>
-<input id="name" placeholder="Nombre">
-<input id="weight" type="number" placeholder="Peso (kg)">
-<select id="status">
-<option value="">Estado físico</option>
-<option value="bajo">Bajo peso</option>
-<option value="normal">Normal</option>
-<option value="sobre">Sobrepeso</option>
-</select>
-<button onclick="login()">Iniciar sesión</button>
+<section id="loginScreen" class="screen active">
+  <h1>🌱 Green Health</h1>
+  <input id="nameInput" placeholder="Nombre">
+  <input id="weightInput" type="number" placeholder="Peso (kg)">
+  <select id="statusInput">
+    <option value="">Estado físico</option>
+    <option value="bajo">Bajo peso</option>
+    <option value="normal">Normal</option>
+    <option value="sobre">Sobrepeso</option>
+  </select>
+  <button id="loginBtn">Iniciar sesión</button>
 </section>
 
 <!-- APP -->
-<section id="app" class="screen">
-<header id="user"></header>
+<section id="appScreen" class="screen">
+  <header id="userHeader"></header>
 
-<div class="card">
-<h2>Calculadora de huella de carbono</h2>
-<input type="number" id="km" placeholder="Km diarios en transporte">
-<input type="number" id="energy" placeholder="kWh mensuales">
-<input type="number" id="meat" placeholder="Comidas con carne por semana">
-<button onclick="calculate()">Calcular</button>
-<p><b>Resultado:</b> <span id="carbon">0</span> kg CO₂</p>
-</div>
+  <div class="card">
+    <h2>Calculadora de huella de carbono</h2>
+    <input id="kmInput" type="number" placeholder="Km diarios en transporte">
+    <input id="energyInput" type="number" placeholder="kWh mensuales">
+    <input id="meatInput" type="number" placeholder="Comidas con carne por semana">
+    <button id="calcBtn">Calcular huella</button>
+    <p><b>Huella mensual:</b> <span id="carbonResult">0</span> kg CO₂</p>
+  </div>
 
-<div class="card">
-<h2>Progreso ecológico</h2>
-<div id="plant">🌱</div>
-<p>Nivel: <b id="level">1</b></p>
-<p>Puntos: <b id="points">0</b></p>
-</div>
+  <div class="card">
+    <h2>Progreso ecológico</h2>
+    <div id="plant">🌱</div>
+    <p>Nivel: <b id="levelSpan">1</b> | Puntos: <b id="pointsSpan">0</b></p>
+    <p class="motivation" id="motivation"></p>
+  </div>
 
-<div class="card">
-<h2>Historial & evolución</h2>
-<canvas id="chart" height="180"></canvas>
-<ul id="history"></ul>
-</div>
+  <div class="card">
+    <h2>Evolución de la huella</h2>
+    <canvas id="chartCanvas"></canvas>
+  </div>
 
-<div class="card">
-<h2>Recomendaciones personalizadas</h2>
-<ul id="tips"></ul>
-</div>
+  <div class="card">
+    <h2>Recomendaciones para reducir CO₂</h2>
+    <ul id="tipsList"></ul>
+  </div>
 
-<div class="card">
-<h2>Hábitos & retos ecológicos</h2>
-<ul id="habits"></ul>
-<p id="training"></p>
-</div>
-
+  <div class="card">
+    <h2>Seguimiento de hábitos</h2>
+    <ul id="habitsList"></ul>
+  </div>
 </section>
 
 <script>
-let points=+localStorage.getItem("points")||0;
-let level=+localStorage.getItem("level")||1;
-let history=JSON.parse(localStorage.getItem("history")||"[]");
+/* ================= ESTADO ================= */
+let points = 0;
+let level = 1;
+let history = [];
 
-function login(){
-  if(!name.value||!weight.value||!status.value) return;
-  localStorage.setItem("user",JSON.stringify({
-    name:name.value,weight:weight.value,status:status.value
-  }));
-  showApp();
-}
+const habits = {
+  "Caminar o usar bicicleta": false,
+  "Apagar luces innecesarias": false,
+  "Reducir consumo de carne": false,
+  "Desconectar cargadores": false,
+  "Usar botellas reutilizables": false
+};
 
-function showApp(){
+/* ================= LOGIN ================= */
+const loginScreen = document.getElementById("loginScreen");
+const appScreen = document.getElementById("appScreen");
+const loginBtn = document.getElementById("loginBtn");
+
+loginBtn.addEventListener("click", () => {
+  const name = document.getElementById("nameInput").value.trim();
+  const weight = document.getElementById("weightInput").value;
+  const status = document.getElementById("statusInput").value;
+
+  if(!name || !weight || !status){
+    alert("Completa todos los campos");
+    return;
+  }
+
+  document.getElementById("userHeader").textContent =
+    `👤 ${name} | ${weight}kg | ${status}`;
+
   loginScreen.classList.remove("active");
   appScreen.classList.add("active");
-  const u=JSON.parse(localStorage.getItem("user"));
-  userHeader.textContent=`👤 ${u.name} | ${u.weight}kg | ${u.status}`;
-  refresh();
-}
 
-function calculate(){
-  const total=(km.value*0.21*30)+(energy.value*0.4)+(meat.value*7*5);
-  carbon.textContent=total.toFixed(1);
+  renderHabits();
+  updateProgress();
+});
 
-  const earn=total<300?30:total<450?15:5;
-  points+=earn;
-  level=Math.min(5,Math.floor(points/50)+1);
+/* ================= CALCULO ================= */
+document.getElementById("calcBtn").addEventListener("click", () => {
+  const km = +document.getElementById("kmInput").value || 0;
+  const energy = +document.getElementById("energyInput").value || 0;
+  const meat = +document.getElementById("meatInput").value || 0;
 
-  history.push(total.toFixed(1));
-  localStorage.setItem("points",points);
-  localStorage.setItem("level",level);
-  localStorage.setItem("history",JSON.stringify(history));
+  const total =
+    (km * 0.21 * 30) +
+    (energy * 0.4) +
+    (meat * 7 * 5);
 
-  updatePlant();
-  updateTips(total);
+  document.getElementById("carbonResult").textContent = total.toFixed(1);
+
+  const gain = total < 300 ? 30 : total < 450 ? 15 : 5;
+  points += gain;
+  level = Math.min(5, Math.floor(points / 60) + 1);
+
+  history.push(total);
+
+  generateTips(total, km, energy, meat);
+  updateProgress();
   drawChart();
-  renderHistory();
+});
+
+/* ================= PROGRESO ================= */
+function updateProgress(){
+  const plants = ["🌱","🌿","🌳","🌴","🌲"];
+  document.getElementById("plant").textContent = plants[level-1];
+  document.getElementById("pointsSpan").textContent = points;
+  document.getElementById("levelSpan").textContent = level;
+
+  const phrases = [
+    "Cada pequeño cambio cuenta.",
+    "Vas por buen camino.",
+    "Tu impacto ya se nota.",
+    "Estás ayudando al planeta.",
+    "Ejemplo de vida sostenible."
+  ];
+  document.getElementById("motivation").textContent = phrases[level-1];
 }
 
-function updatePlant(){
-  const plants=["🌱","🌿","🌳","🌴","🌲"];
-  plant.textContent=plants[level-1];
-  levelSpan.textContent=level;
-  pointsSpan.textContent=points;
+/* ================= RECOMENDACIONES ================= */
+function generateTips(total, km, energy, meat){
+  const tips = document.getElementById("tipsList");
+  tips.innerHTML = "";
+
+  if(km > 10) tips.innerHTML += "<li>Reduce el uso del auto, camina o usa bicicleta</li>";
+  if(energy > 200) tips.innerHTML += "<li>Disminuye el consumo eléctrico en casa</li>";
+  if(meat > 5) tips.innerHTML += "<li>Reducir carne baja mucho tu huella</li>";
+  if(total < 300) tips.innerHTML += "<li>Excelente huella ecológica 🌍</li>";
+
+  tips.innerHTML += "<li>Cumplir hábitos diarios acelera tu progreso</li>";
 }
 
-function updateTips(c){
-  const u=JSON.parse(localStorage.getItem("user"));
-  tips.innerHTML="";
-  if(c>450){
-    tips.innerHTML+="<li>Reduce uso del automóvil</li>";
-    tips.innerHTML+="<li>Disminuye carne roja</li>";
-  }else tips.innerHTML+="<li>Buen impacto ambiental 🌱</li>";
-
-  if(u.status==="sobre")
-    tips.innerHTML+="<li>Caminar 30 min diarios mejora salud y reduce CO₂</li>";
-  if(u.status==="bajo")
-    tips.innerHTML+="<li>Mejora nutrición con alimentos locales</li>";
-}
-
+/* ================= GRAFICO ================= */
 function drawChart(){
-  const ctx=chart.getContext("2d");
-  ctx.clearRect(0,0,chart.width,chart.height);
-  if(history.length<2) return;
-  const max=Math.max(...history);
+  const canvas = document.getElementById("chartCanvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 180;
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(history.length < 2) return;
+
+  const max = Math.max(...history);
   ctx.beginPath();
+
   history.forEach((v,i)=>{
-    const x=i*(chart.width/(history.length-1));
-    const y=chart.height-(v/max*chart.height);
-    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    const x = i * (canvas.width / (history.length - 1));
+    const y = canvas.height - (v / max * canvas.height);
+    if(i === 0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
   });
-  ctx.strokeStyle="#2d6a4f";
-  ctx.lineWidth=3;
+
+  ctx.strokeStyle = "#2d6a4f";
+  ctx.lineWidth = 3;
   ctx.stroke();
 }
 
-function renderHistory(){
-  historyList.innerHTML="";
-  history.slice(-5).forEach(h=>{
-    const li=document.createElement("li");
-    li.textContent=h+" kg CO₂";
-    historyList.appendChild(li);
+/* ================= HABITOS ================= */
+function renderHabits(){
+  const ul = document.getElementById("habitsList");
+  ul.innerHTML = "";
+
+  Object.keys(habits).forEach(habit=>{
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <label>
+        <input type="checkbox">
+        ${habit}
+      </label>
+    `;
+    const checkbox = li.querySelector("input");
+    checkbox.addEventListener("change", ()=>{
+      if(!habits[habit]){
+        points += 10;
+        level = Math.min(5, Math.floor(points / 60) + 1);
+      }
+      habits[habit] = checkbox.checked;
+      updateProgress();
+    });
+    ul.appendChild(li);
   });
 }
-
-function refresh(){
-  updatePlant();
-  drawChart();
-  renderHistory();
-  habits.innerHTML="<li>Usar bicicleta</li><li>Apagar luces</li><li>Reducir plásticos</li>";
-  training.textContent=level<3
-    ?"Empieza con pequeños cambios diarios."
-    :"Excelente progreso, mantén hábitos sostenibles.";
-}
-
-const name=document.getElementById("name"),
-weight=document.getElementById("weight"),
-status=document.getElementById("status"),
-loginScreen=document.getElementById("login"),
-appScreen=document.getElementById("app"),
-userHeader=document.getElementById("user"),
-km=document.getElementById("km"),
-energy=document.getElementById("energy"),
-meat=document.getElementById("meat"),
-carbon=document.getElementById("carbon"),
-plant=document.getElementById("plant"),
-levelSpan=document.getElementById("level"),
-pointsSpan=document.getElementById("points"),
-chart=document.getElementById("chart"),
-historyList=document.getElementById("history"),
-tips=document.getElementById("tips"),
-habits=document.getElementById("habits"),
-training=document.getElementById("training");
-
-window.onload=()=>{if(localStorage.getItem("user"))showApp();}
 </script>
 
 </body>
