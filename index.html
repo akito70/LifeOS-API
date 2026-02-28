@@ -1,456 +1,211 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<title>LifeOS - Panel Personal Mejorado</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Green Health</title>
 
 <style>
-:root{
-  --bg:#020617;
-  --panel:#0f172a;
-  --panel-soft:#0e1724;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --primary-hover:#0ea5e9;
-  --green:#22c55e;
-  --yellow:#facc15;
-  --red:#ef4444;
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{
+  margin:0;height:100vh;overflow:hidden;
+  background:linear-gradient(160deg,#74c69d,#40916c);
 }
-
-*{ box-sizing:border-box; }
-body{ margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; }
-
-/* Sidebar */
-aside {
-  width: 240px;
-  background: linear-gradient(180deg,#060914 0%, #071022 50%, #03050a 100%);
-  border-right: 1px solid rgba(14,23,36,0.8);
-  padding: 18px;
-  box-shadow: inset -2px 0 8px rgba(0,0,0,0.6);
+.screen{display:none;height:100vh;padding:20px}
+.screen.active{display:flex;flex-direction:column}
+h1,h2{text-align:center}
+input,select,button{
+  width:100%;padding:12px;margin-bottom:10px;
+  border-radius:14px;border:none;font-size:16px
 }
-aside h2 { font-size: 18px; margin-bottom: 20px; cursor:pointer; display:flex; align-items:center; gap:8px; }
-aside h2 img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
-nav{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  align-items: stretch;
-}
-nav a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 6px;
-  border-radius: 12px;
-  color: var(--text);
-  text-decoration: none;
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
-  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-  min-height: 64px;
-  text-align: center;
-  font-size: 13px;
-}
-nav a i{ font-size:20px; display:block; }
-nav a:hover{
-  transform: translateY(-3px);
-  background: linear-gradient(180deg, var(--panel-soft), var(--panel));
-  box-shadow: 0 6px 14px rgba(2,6,23,0.6);
-}
-nav a.active{
-  background: linear-gradient(180deg, var(--primary), var(--primary-hover));
-  color: #020617;
-  box-shadow: 0 8px 18px rgba(3,77,125,0.18);
-}
-
-/* Main */
-main{ flex:1; padding:20px; overflow:auto; }
-
-/* Header */
-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-header h1{ margin:0; font-size:22px; }
-header span{ color:var(--muted); }
-
-/* Mini widgets */
-.mini-widgets {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 12px;
-  margin-bottom:20px;
-}
-.widget{
-  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-}
-.widget h4{
-  margin:0 0 6px;
-  font-size:12px;
-  color: var(--muted);
-  display:flex;
-  align-items:center;
-  gap:4px;
-}
-.widget strong{ font-size:18px; }
-
-/* Dashboard Cards */
-.cards{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin-bottom:20px;
+button{
+  background:linear-gradient(145deg,#2d6a4f,#1b4332);
+  color:#fff;font-weight:bold
 }
 .card{
-  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
+  background:linear-gradient(145deg,#fff,#e9f5ee);
+  border-radius:20px;padding:15px;margin-bottom:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,.2)
 }
-.card h3{
-  margin:0 0 8px;
-  font-size:14px;
-  color: var(--muted);
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-.card strong{
-  font-size:24px;
-  margin-top:4px;
-}
-.card .subtext{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:4px;
-}
-
-/* Shortcuts */
-.shortcuts{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-.shortcuts button{
-  flex:1;
-  background:var(--primary);
-  border:none;
-  color:#020617;
-  padding:10px;
-  border-radius:12px;
-  font-weight:600;
-  cursor:pointer;
-}
-.shortcuts button:hover{ background:var(--primary-hover); }
-
-/* Feed de actividad */
-.activity-feed{
-  background: linear-gradient(180deg, var(--panel), var(--panel-soft));
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:12px;
-}
-.activity-feed h4{ font-size:14px; margin-bottom:8px; color:var(--muted);}
-.activity-feed ul{ margin:0; padding-left:16px; font-size:12px; color:var(--text);}
-.activity-feed li{ margin-bottom:4px; }
-
-/* Perfil Modal */
-#profileModal{
-  position:fixed;
-  top:0; left:0; right:0; bottom:0;
-  background:rgba(0,0,0,0.7);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-#profileModal .modal-content{
-  background: var(--panel);
-  padding:20px;
-  border-radius:14px;
-  width:90%;
-  max-width:320px;
-  text-align:center;
-  position:relative;
-}
-#profileModal .modal-content img{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  margin-bottom:12px;
-  object-fit:cover;
-}
-#profileModal .modal-content h3{ margin:0 0 6px; }
-#profileModal .modal-content p{ color:var(--muted); margin-bottom:12px; font-size:14px; }
-#profileModal .close{
-  position:absolute;
-  top:10px; right:10px;
-  cursor:pointer;
-  font-size:18px;
-  color:var(--muted);
-}
-
-/* Responsive */
-@media(max-width:800px){
-  body{ flex-direction:column; }
-  aside{ width:100%; border-right:none; border-bottom:1px solid var(--border); }
-  main{ padding:14px; }
-  nav{ grid-template-columns: repeat(3, 1fr); }
-  nav a{ padding:8px 6px; font-size:14px; justify-content:center; }
-  .mini-widgets{ grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
-  .cards{ grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-  .shortcuts button{ flex:100%; }
-}
+#app{overflow-y:auto}
+header{text-align:center;font-weight:bold;margin-bottom:10px}
+#plant{text-align:center;font-size:70px}
+canvas{width:100%;background:#fff;border-radius:14px}
+ul{padding-left:18px} li{margin-bottom:6px}
 </style>
 </head>
+
 <body>
 
-<!-- ✅ GUARD: si no hay sesión, manda a login -->
-<script>
-(function(){
-  if (sessionStorage.getItem("lifeos_logged") !== "true") {
-    const page = location.pathname.split("/").pop() || "index.html";
-    sessionStorage.setItem("lifeos_redirect", page);
-    location.replace("login.html");
-  }
-})();
-</script>
+<!-- LOGIN -->
+<section id="login" class="screen active">
+<h1>🌱 Green Health</h1>
+<input id="name" placeholder="Nombre">
+<input id="weight" type="number" placeholder="Peso (kg)">
+<select id="status">
+<option value="">Estado físico</option>
+<option value="bajo">Bajo peso</option>
+<option value="normal">Normal</option>
+<option value="sobre">Sobrepeso</option>
+</select>
+<button onclick="login()">Iniciar sesión</button>
+</section>
 
-<!-- Sidebar -->
-<aside>
-  <h2 id="profileBtn">
-    <img id="profilePic" src="https://via.placeholder.com/32" alt="Perfil">
-    LifeOS
-  </h2>
-  <input type="file" id="uploadProfile" accept="image/*" style="display:none;">
-  <nav>
-    <a href="index.html" class="active"><i class="bi bi-house-fill"></i> Dashboard</a>
-    <a href="tareas.html"><i class="bi bi-list-check"></i> Tareas</a>
-    <a href="alarmas.html"><i class="bi bi-alarm-fill"></i> Alarmas</a>
-    <a href="calendario.html"><i class="bi bi-calendar-event-fill"></i> Calendario</a>
-    <a href="ejercicio.html"><i class="bi bi-heart-pulse-fill"></i> Ejercicio</a>
-    <a href="finances.html"><i class="bi bi-wallet2"></i> Finanzas</a>
-    <a href="constraseñas.html"><i class="bi bi-key-fill"></i> Contraseñas</a>
-    <a href="musica.html"><i class="bi bi-music-note-beamed"></i> Música</a>
-    <a href="navegador.html"><i class="bi bi-browser-safari"></i> Navegador</a>
-  </nav>
-</aside>
+<!-- APP -->
+<section id="app" class="screen">
+<header id="user"></header>
 
-<!-- Main -->
-<main>
-  <header>
-    <h1><i class="bi bi-speedometer2"></i> Panel Principal</h1>
-    <span id="fecha"></span>
-  </header>
-
-  <section class="mini-widgets">
-    <div class="widget">
-      <h4><i class="bi bi-bell-fill"></i> Próxima Alarma</h4>
-      <strong id="nextAlarm">—</strong>
-    </div>
-    <div class="widget">
-      <h4><i class="bi bi-list-check"></i> Tareas Urgentes</h4>
-      <strong id="urgentTasks">—</strong>
-    </div>
-    <div class="widget">
-      <h4><i class="bi bi-calendar-week-fill"></i> Semana Completada</h4>
-      <strong id="weekProgress">0%</strong>
-    </div>
-  </section>
-
-  <section class="cards">
-    <div class="card">
-      <h3><i class="bi bi-list-check"></i> Tareas</h3>
-      <strong id="taskCount">0</strong>
-      <div class="subtext">Pendientes / Totales</div>
-    </div>
-
-    <div class="card">
-      <h3><i class="bi bi-clock-fill"></i> Alarmas</h3>
-      <strong id="alarmCount">0</strong>
-    </div>
-
-    <div class="card">
-      <h3><i class="bi bi-wallet2"></i> Finanzas</h3>
-      <strong id="balanceCount">$0</strong>
-    </div>
-
-    <!-- ✅ Música mejorada: muestra "lo último abierto desde musica.html" -->
-    <div class="card">
-      <h3><i class="bi bi-music-note-beamed"></i> Música</h3>
-      <strong id="musicStatus">—</strong>
-      <div class="subtext" id="musicSub">Abre algo en Música</div>
-    </div>
-  </section>
-
-  <div class="shortcuts">
-    <button onclick="goNewTask()"><i class="bi bi-plus-circle"></i> Nueva Tarea</button>
-    <button onclick="goNewAlarm()"><i class="bi bi-alarm-fill"></i> Nueva Alarma</button>
-    <button onclick="goNewExpense()"><i class="bi bi-currency-dollar"></i> Registrar Gasto</button>
-  </div>
-
-  <div class="activity-feed">
-    <h4><i class="bi bi-clock-history"></i> Actividad Reciente</h4>
-    <ul id="activityFeed"><li>—</li></ul>
-  </div>
-</main>
-
-<!-- Perfil Modal -->
-<div id="profileModal">
-  <div class="modal-content">
-    <span class="close" id="closeProfile">&times;</span>
-    <img id="modalProfilePic" src="https://via.placeholder.com/80" alt="Foto de Perfil">
-    <h3 id="profileName">Usuario</h3>
-    <p id="profileEmail">usuario@lifeos.com</p>
-    <button onclick="alert('Abrir configuraciones')">Configuraciones</button>
-  </div>
+<div class="card">
+<h2>Calculadora de huella de carbono</h2>
+<input type="number" id="km" placeholder="Km diarios en transporte">
+<input type="number" id="energy" placeholder="kWh mensuales">
+<input type="number" id="meat" placeholder="Comidas con carne por semana">
+<button onclick="calculate()">Calcular</button>
+<p><b>Resultado:</b> <span id="carbon">0</span> kg CO₂</p>
 </div>
 
+<div class="card">
+<h2>Progreso ecológico</h2>
+<div id="plant">🌱</div>
+<p>Nivel: <b id="level">1</b></p>
+<p>Puntos: <b id="points">0</b></p>
+</div>
+
+<div class="card">
+<h2>Historial & evolución</h2>
+<canvas id="chart" height="180"></canvas>
+<ul id="history"></ul>
+</div>
+
+<div class="card">
+<h2>Recomendaciones personalizadas</h2>
+<ul id="tips"></ul>
+</div>
+
+<div class="card">
+<h2>Hábitos & retos ecológicos</h2>
+<ul id="habits"></ul>
+<p id="training"></p>
+</div>
+
+</section>
+
 <script>
-// Fecha
-document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-NI',{
-  weekday:'long', year:'numeric', month:'long', day:'numeric'
-});
+let points=+localStorage.getItem("points")||0;
+let level=+localStorage.getItem("level")||1;
+let history=JSON.parse(localStorage.getItem("history")||"[]");
 
-// Datos simulados
-let tasks = JSON.parse(localStorage.getItem("lifeos_tasks") || "[]");
-let alarms = JSON.parse(localStorage.getItem("lifeos_alarms") || "[]");
-let balance = parseFloat(localStorage.getItem("lifeos_balance") || 0);
-
-function updateTaskWidget(){
-  tasks = JSON.parse(localStorage.getItem("lifeos_tasks") || "[]");
-  const pending = tasks.filter(t=>!t.done).length;
-  const total = tasks.length;
-  document.getElementById('urgentTasks').textContent = pending;
-  document.getElementById('taskCount').textContent = `${pending} / ${total}`;
+function login(){
+  if(!name.value||!weight.value||!status.value) return;
+  localStorage.setItem("user",JSON.stringify({
+    name:name.value,weight:weight.value,status:status.value
+  }));
+  showApp();
 }
 
-updateTaskWidget();
-
-window.addEventListener('storage', (e)=>{
-  if(e.key==='lifeos_tasks') updateTaskWidget();
-  if(e.key==='lifeos_music_last_opened_v1') updateMusicCard();
-});
-
-document.getElementById('alarmCount').textContent = alarms.length;
-document.getElementById('balanceCount').textContent = `$${balance.toFixed(2)}`;
-document.getElementById('nextAlarm').textContent = alarms[0]?.time || '—';
-document.getElementById('weekProgress').textContent = '50%';
-
-const activityFeed = document.getElementById('activityFeed');
-activityFeed.innerHTML = `
-  <li>Tarea completada</li>
-  <li>Nueva alarma agregada</li>
-  <li>Nuevo gasto registrado</li>
-`;
-
-const profileBtn = document.getElementById('profileBtn');
-const profileModal = document.getElementById('profileModal');
-const closeProfile = document.getElementById('closeProfile');
-
-profileBtn.onclick = ()=> profileModal.style.display='flex';
-closeProfile.onclick = ()=> profileModal.style.display='none';
-window.onclick = e => { if(e.target===profileModal) profileModal.style.display='none'; }
-
-// Subir foto de perfil
-const uploadInput = document.getElementById('uploadProfile');
-const profilePic = document.getElementById('profilePic');
-const modalPic = document.getElementById('modalProfilePic');
-
-profileBtn.addEventListener('click',()=>uploadInput.click());
-uploadInput.addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(file){
-    const reader = new FileReader();
-    reader.onload = function(evt){
-      profilePic.src = evt.target.result;
-      modalPic.src = evt.target.result;
-      localStorage.setItem('lifeos_profilePic', evt.target.result);
-    }
-    reader.readAsDataURL(file);
-  }
-});
-
-// Cargar foto de perfil guardada
-const savedPic = localStorage.getItem('lifeos_profilePic');
-if(savedPic){ profilePic.src = savedPic; modalPic.src = savedPic; }
-
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    updateTaskWidget();
-    updateMusicCard();
-  }
-});
-
-function goNewTask(){
-  localStorage.setItem("lifeos_focus_task","true");
-  location.href = "tareas.html";
-}
-function goNewAlarm(){
-  location.href = "alarmas.html";
-}
-function goNewExpense(){
-  location.href = "finances.html";
+function showApp(){
+  loginScreen.classList.remove("active");
+  appScreen.classList.add("active");
+  const u=JSON.parse(localStorage.getItem("user"));
+  userHeader.textContent=`👤 ${u.name} | ${u.weight}kg | ${u.status}`;
+  refresh();
 }
 
-/* ---------------------------
-   Música: mostrar "último abierto desde musica.html"
-   (No es el now-playing real de Spotify; es el último que abriste desde LifeOS)
---------------------------- */
-const LS_LAST_OPENED = "lifeos_music_last_opened_v1";
+function calculate(){
+  const total=(km.value*0.21*30)+(energy.value*0.4)+(meat.value*7*5);
+  carbon.textContent=total.toFixed(1);
 
-function timeAgo(ms){
-  const s = Math.floor((Date.now() - ms) / 1000);
-  if (s < 10) return "ahora";
-  if (s < 60) return `hace ${s}s`;
-  const m = Math.floor(s / 60);
-  if (m < 60) return `hace ${m} min`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `hace ${h} h`;
-  const d = Math.floor(h / 24);
-  return `hace ${d} d`;
+  const earn=total<300?30:total<450?15:5;
+  points+=earn;
+  level=Math.min(5,Math.floor(points/50)+1);
+
+  history.push(total.toFixed(1));
+  localStorage.setItem("points",points);
+  localStorage.setItem("level",level);
+  localStorage.setItem("history",JSON.stringify(history));
+
+  updatePlant();
+  updateTips(total);
+  drawChart();
+  renderHistory();
 }
 
-function updateMusicCard(){
-  const statusEl = document.getElementById("musicStatus");
-  const subEl = document.getElementById("musicSub");
-  if(!statusEl || !subEl) return;
-
-  let last = null;
-  try{ last = JSON.parse(localStorage.getItem(LS_LAST_OPENED) || "null"); }
-  catch{ last = null; }
-
-  if(!last){
-    statusEl.textContent = "Detenido";
-    subEl.textContent = "Abre algo en Música";
-    return;
-  }
-
-  const title = last.oembedTitle || last.title || last.name || "Spotify";
-  const author = last.oembedAuthor || last.author || "";
-  statusEl.textContent = author ? `${title} — ${author}` : title;
-
-  const kind = last.type ? String(last.type).toUpperCase() : "SPOTIFY";
-  const when = last.openedAt ? timeAgo(last.openedAt) : "";
-  subEl.textContent = when ? `${kind} · ${when}` : `${kind} · Último abierto`;
+function updatePlant(){
+  const plants=["🌱","🌿","🌳","🌴","🌲"];
+  plant.textContent=plants[level-1];
+  levelSpan.textContent=level;
+  pointsSpan.textContent=points;
 }
 
-// Inicial
-updateMusicCard();
+function updateTips(c){
+  const u=JSON.parse(localStorage.getItem("user"));
+  tips.innerHTML="";
+  if(c>450){
+    tips.innerHTML+="<li>Reduce uso del automóvil</li>";
+    tips.innerHTML+="<li>Disminuye carne roja</li>";
+  }else tips.innerHTML+="<li>Buen impacto ambiental 🌱</li>";
+
+  if(u.status==="sobre")
+    tips.innerHTML+="<li>Caminar 30 min diarios mejora salud y reduce CO₂</li>";
+  if(u.status==="bajo")
+    tips.innerHTML+="<li>Mejora nutrición con alimentos locales</li>";
+}
+
+function drawChart(){
+  const ctx=chart.getContext("2d");
+  ctx.clearRect(0,0,chart.width,chart.height);
+  if(history.length<2) return;
+  const max=Math.max(...history);
+  ctx.beginPath();
+  history.forEach((v,i)=>{
+    const x=i*(chart.width/(history.length-1));
+    const y=chart.height-(v/max*chart.height);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+  });
+  ctx.strokeStyle="#2d6a4f";
+  ctx.lineWidth=3;
+  ctx.stroke();
+}
+
+function renderHistory(){
+  historyList.innerHTML="";
+  history.slice(-5).forEach(h=>{
+    const li=document.createElement("li");
+    li.textContent=h+" kg CO₂";
+    historyList.appendChild(li);
+  });
+}
+
+function refresh(){
+  updatePlant();
+  drawChart();
+  renderHistory();
+  habits.innerHTML="<li>Usar bicicleta</li><li>Apagar luces</li><li>Reducir plásticos</li>";
+  training.textContent=level<3
+    ?"Empieza con pequeños cambios diarios."
+    :"Excelente progreso, mantén hábitos sostenibles.";
+}
+
+const name=document.getElementById("name"),
+weight=document.getElementById("weight"),
+status=document.getElementById("status"),
+loginScreen=document.getElementById("login"),
+appScreen=document.getElementById("app"),
+userHeader=document.getElementById("user"),
+km=document.getElementById("km"),
+energy=document.getElementById("energy"),
+meat=document.getElementById("meat"),
+carbon=document.getElementById("carbon"),
+plant=document.getElementById("plant"),
+levelSpan=document.getElementById("level"),
+pointsSpan=document.getElementById("points"),
+chart=document.getElementById("chart"),
+historyList=document.getElementById("history"),
+tips=document.getElementById("tips"),
+habits=document.getElementById("habits"),
+training=document.getElementById("training");
+
+window.onload=()=>{if(localStorage.getItem("user"))showApp();}
 </script>
 
 </body>
