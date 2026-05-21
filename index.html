@@ -1,260 +1,500 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Green Health</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{
-  margin:0;
-  height:100vh;
-  background:linear-gradient(160deg,#74c69d,#40916c);
-}
-.screen{
-  display:none;
-  height:100vh;
-  padding:20px;
-}
-.screen.active{
-  display:flex;
-  flex-direction:column;
-}
-h1,h2{text-align:center;color:#1b4332}
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin-bottom:10px;
-  border-radius:14px;
-  border:none;
-  font-size:16px;
-}
-button{
-  background:linear-gradient(145deg,#2d6a4f,#1b4332);
-  color:#fff;
-  font-weight:bold;
-}
-.card{
-  background:#ffffff;
-  border-radius:20px;
-  padding:15px;
-  margin-bottom:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,.2);
-}
-#app{overflow-y:auto}
-#plant{text-align:center;font-size:70px}
-canvas{
-  width:100%;
-  height:180px;
-  background:#f1f1f1;
-  border-radius:14px;
-}
-ul{padding-left:18px}
-li{margin-bottom:6px}
-label{display:flex;gap:8px;align-items:center}
-.motivation{text-align:center;font-style:italic;color:#2d6a4f}
-header{text-align:center;font-weight:bold;margin-bottom:10px}
-</style>
+  <title>Rifa Día de la Madre</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:
+      linear-gradient(135deg,#ff3d81,#ff76a8,#ffc1d6);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:30px;
+      overflow-x:hidden;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(15px);
+      border-radius:30px;
+      padding:35px;
+      box-shadow:
+      0 15px 40px rgba(0,0,0,0.15);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .container::before{
+      content:'';
+      position:absolute;
+      width:250px;
+      height:250px;
+      background:rgba(255,255,255,0.2);
+      border-radius:50%;
+      top:-100px;
+      right:-100px;
+    }
+
+    .container::after{
+      content:'';
+      position:absolute;
+      width:200px;
+      height:200px;
+      background:rgba(255,255,255,0.15);
+      border-radius:50%;
+      bottom:-80px;
+      left:-80px;
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:35px;
+      position:relative;
+      z-index:2;
+    }
+
+    .header h1{
+      font-size:2.5rem;
+      color:#d81b60;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .header p{
+      color:#666;
+      font-size:15px;
+    }
+
+    .ticket-preview{
+      background:
+      linear-gradient(135deg,#ff4f8b,#d81b60);
+      color:white;
+      border-radius:25px;
+      padding:25px;
+      margin-bottom:30px;
+      text-align:center;
+      box-shadow:
+      0 10px 25px rgba(216,27,96,0.3);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .ticket-preview::before{
+      content:'🎀';
+      position:absolute;
+      font-size:80px;
+      opacity:0.12;
+      right:15px;
+      top:-10px;
+    }
+
+    .ticket-preview h2{
+      font-size:16px;
+      margin-bottom:8px;
+      font-weight:400;
+    }
+
+    .ticket-number{
+      font-size:3rem;
+      font-weight:700;
+      letter-spacing:3px;
+    }
+
+    form{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      margin-bottom:35px;
+      position:relative;
+      z-index:2;
+    }
+
+    .full{
+      grid-column:1/3;
+    }
+
+    .input-group{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    label{
+      font-size:14px;
+      color:#444;
+      font-weight:600;
+    }
+
+    input{
+      border:none;
+      background:#f7f7f7;
+      padding:15px;
+      border-radius:15px;
+      font-size:15px;
+      outline:none;
+      transition:0.3s;
+    }
+
+    input:focus{
+      background:white;
+      box-shadow:
+      0 0 0 4px rgba(255,61,129,0.18);
+      transform:translateY(-1px);
+    }
+
+    .btn{
+      border:none;
+      background:
+      linear-gradient(135deg,#ff3d81,#d81b60);
+      color:white;
+      padding:16px;
+      border-radius:18px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:
+      0 10px 25px rgba(216,27,96,0.3);
+    }
+
+    .table-container{
+      overflow-x:auto;
+      position:relative;
+      z-index:2;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:20px;
+    }
+
+    thead{
+      background:
+      linear-gradient(135deg,#ff4f8b,#d81b60);
+      color:white;
+    }
+
+    th{
+      padding:18px;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    td{
+      padding:16px;
+      text-align:center;
+      border-bottom:1px solid #f0f0f0;
+      color:#444;
+    }
+
+    tbody tr{
+      background:white;
+      transition:0.2s;
+    }
+
+    tbody tr:hover{
+      background:#fff1f6;
+    }
+
+    .delete-btn{
+      border:none;
+      background:#ff4d4d;
+      color:white;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    .delete-btn:hover{
+      background:#d60000;
+    }
+
+    .footer{
+      margin-top:25px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:15px;
+    }
+
+    .counter{
+      color:#555;
+      font-weight:600;
+      font-size:15px;
+    }
+
+    .badge{
+      background:#ffe0ec;
+      color:#d81b60;
+      padding:10px 18px;
+      border-radius:50px;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    @media(max-width:768px){
+
+      .container{
+        padding:22px;
+      }
+
+      form{
+        grid-template-columns:1fr;
+      }
+
+      .full{
+        grid-column:auto;
+      }
+
+      .header h1{
+        font-size:2rem;
+      }
+
+      .ticket-number{
+        font-size:2.3rem;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<section id="loginScreen" class="screen active">
-  <h1>🌱 Green Health</h1>
-  <input id="nameInput" placeholder="Nombre">
-  <input id="weightInput" type="number" placeholder="Peso (kg)">
-  <select id="statusInput">
-    <option value="">Estado físico</option>
-    <option value="bajo">Bajo peso</option>
-    <option value="normal">Normal</option>
-    <option value="sobre">Sobrepeso</option>
-  </select>
-  <button id="loginBtn">Iniciar sesión</button>
-</section>
+  <div class="container">
 
-<!-- APP -->
-<section id="appScreen" class="screen">
-  <header id="userHeader"></header>
+    <div class="header">
+      <h1>🌸 Rifa Día de la Madre 🌸</h1>
+      <p>Sistema de registro de participantes</p>
+    </div>
 
-  <div class="card">
-    <h2>Calculadora de huella de carbono</h2>
-    <input id="kmInput" type="number" placeholder="Km diarios en transporte">
-    <input id="energyInput" type="number" placeholder="kWh mensuales">
-    <input id="meatInput" type="number" placeholder="Comidas con carne por semana">
-    <button id="calcBtn">Calcular huella</button>
-    <p><b>Huella mensual:</b> <span id="carbonResult">0</span> kg CO₂</p>
+    <div class="ticket-preview">
+      <h2>Próximo Número de Rifa</h2>
+      <div class="ticket-number" id="nextNumber">
+        #001
+      </div>
+    </div>
+
+    <form id="rifaForm">
+
+      <div class="input-group">
+        <label>Nombre Completo</label>
+
+        <input
+          type="text"
+          id="nombre"
+          placeholder="Ingrese el nombre completo"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Número de Teléfono</label>
+
+        <input
+          type="tel"
+          id="telefono"
+          placeholder="8888-8888"
+          required
+        />
+      </div>
+
+      <div class="input-group full">
+        <label>Cédula</label>
+
+        <input
+          type="text"
+          id="cedula"
+          placeholder="Ingrese la cédula"
+          required
+        />
+      </div>
+
+      <button class="btn full" type="submit">
+        Registrar Participante
+      </button>
+
+    </form>
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Rifa</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Cédula</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+
+        <tbody id="tablaParticipantes"></tbody>
+
+      </table>
+
+    </div>
+
+    <div class="footer">
+
+      <div class="counter" id="contador">
+        Total participantes: 0
+      </div>
+
+      <div class="badge">
+        🎟️ Sorteo Especial
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="card">
-    <h2>Progreso ecológico</h2>
-    <div id="plant">🌱</div>
-    <p>Nivel: <b id="levelSpan">1</b> | Puntos: <b id="pointsSpan">0</b></p>
-    <p class="motivation" id="motivation"></p>
-  </div>
+  <script>
 
-  <div class="card">
-    <h2>Evolución de la huella</h2>
-    <canvas id="chartCanvas"></canvas>
-  </div>
+    let participantes = JSON.parse(
+      localStorage.getItem("participantes")
+    ) || [];
 
-  <div class="card">
-    <h2>Recomendaciones para reducir CO₂</h2>
-    <ul id="tipsList"></ul>
-  </div>
+    const form = document.getElementById("rifaForm");
+    const tabla = document.getElementById("tablaParticipantes");
+    const contador = document.getElementById("contador");
+    const nextNumber = document.getElementById("nextNumber");
 
-  <div class="card">
-    <h2>Seguimiento de hábitos</h2>
-    <ul id="habitsList"></ul>
-  </div>
-</section>
+    actualizarNumero();
+    mostrarParticipantes();
 
-<script>
-/* ================= ESTADO ================= */
-let points = 0;
-let level = 1;
-let history = [];
+    form.addEventListener("submit", function(e){
 
-const habits = {
-  "Caminar o usar bicicleta": false,
-  "Apagar luces innecesarias": false,
-  "Reducir consumo de carne": false,
-  "Desconectar cargadores": false,
-  "Usar botellas reutilizables": false
-};
+      e.preventDefault();
 
-/* ================= LOGIN ================= */
-const loginScreen = document.getElementById("loginScreen");
-const appScreen = document.getElementById("appScreen");
-const loginBtn = document.getElementById("loginBtn");
+      const nombre = document.getElementById("nombre").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+      const cedula = document.getElementById("cedula").value.trim();
 
-loginBtn.addEventListener("click", () => {
-  const name = document.getElementById("nameInput").value.trim();
-  const weight = document.getElementById("weightInput").value;
-  const status = document.getElementById("statusInput").value;
+      // Número automático
+      const numero = participantes.length + 1;
 
-  if(!name || !weight || !status){
-    alert("Completa todos los campos");
-    return;
-  }
+      participantes.push({
+        numero,
+        nombre,
+        telefono,
+        cedula
+      });
 
-  document.getElementById("userHeader").textContent =
-    `👤 ${name} | ${weight}kg | ${status}`;
+      localStorage.setItem(
+        "participantes",
+        JSON.stringify(participantes)
+      );
 
-  loginScreen.classList.remove("active");
-  appScreen.classList.add("active");
+      form.reset();
 
-  renderHabits();
-  updateProgress();
-});
+      mostrarParticipantes();
+      actualizarNumero();
 
-/* ================= CALCULO ================= */
-document.getElementById("calcBtn").addEventListener("click", () => {
-  const km = +document.getElementById("kmInput").value || 0;
-  const energy = +document.getElementById("energyInput").value || 0;
-  const meat = +document.getElementById("meatInput").value || 0;
-
-  const total =
-    (km * 0.21 * 30) +
-    (energy * 0.4) +
-    (meat * 7 * 5);
-
-  document.getElementById("carbonResult").textContent = total.toFixed(1);
-
-  const gain = total < 300 ? 30 : total < 450 ? 15 : 5;
-  points += gain;
-  level = Math.min(5, Math.floor(points / 60) + 1);
-
-  history.push(total);
-
-  generateTips(total, km, energy, meat);
-  updateProgress();
-  drawChart();
-});
-
-/* ================= PROGRESO ================= */
-function updateProgress(){
-  const plants = ["🌱","🌿","🌳","🌴","🌲"];
-  document.getElementById("plant").textContent = plants[level-1];
-  document.getElementById("pointsSpan").textContent = points;
-  document.getElementById("levelSpan").textContent = level;
-
-  const phrases = [
-    "Cada pequeño cambio cuenta.",
-    "Vas por buen camino.",
-    "Tu impacto ya se nota.",
-    "Estás ayudando al planeta.",
-    "Ejemplo de vida sostenible."
-  ];
-  document.getElementById("motivation").textContent = phrases[level-1];
-}
-
-/* ================= RECOMENDACIONES ================= */
-function generateTips(total, km, energy, meat){
-  const tips = document.getElementById("tipsList");
-  tips.innerHTML = "";
-
-  if(km > 10) tips.innerHTML += "<li>Reduce el uso del auto, camina o usa bicicleta</li>";
-  if(energy > 200) tips.innerHTML += "<li>Disminuye el consumo eléctrico en casa</li>";
-  if(meat > 5) tips.innerHTML += "<li>Reducir carne baja mucho tu huella</li>";
-  if(total < 300) tips.innerHTML += "<li>Excelente huella ecológica 🌍</li>";
-
-  tips.innerHTML += "<li>Cumplir hábitos diarios acelera tu progreso</li>";
-}
-
-/* ================= GRAFICO ================= */
-function drawChart(){
-  const canvas = document.getElementById("chartCanvas");
-  const ctx = canvas.getContext("2d");
-
-  canvas.width = canvas.offsetWidth;
-  canvas.height = 180;
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(history.length < 2) return;
-
-  const max = Math.max(...history);
-  ctx.beginPath();
-
-  history.forEach((v,i)=>{
-    const x = i * (canvas.width / (history.length - 1));
-    const y = canvas.height - (v / max * canvas.height);
-    if(i === 0) ctx.moveTo(x,y);
-    else ctx.lineTo(x,y);
-  });
-
-  ctx.strokeStyle = "#2d6a4f";
-  ctx.lineWidth = 3;
-  ctx.stroke();
-}
-
-/* ================= HABITOS ================= */
-function renderHabits(){
-  const ul = document.getElementById("habitsList");
-  ul.innerHTML = "";
-
-  Object.keys(habits).forEach(habit=>{
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <label>
-        <input type="checkbox">
-        ${habit}
-      </label>
-    `;
-    const checkbox = li.querySelector("input");
-    checkbox.addEventListener("change", ()=>{
-      if(!habits[habit]){
-        points += 10;
-        level = Math.min(5, Math.floor(points / 60) + 1);
-      }
-      habits[habit] = checkbox.checked;
-      updateProgress();
     });
-    ul.appendChild(li);
-  });
-}
-</script>
+
+    function mostrarParticipantes(){
+
+      tabla.innerHTML = "";
+
+      participantes.forEach((p, index) => {
+
+        tabla.innerHTML += `
+
+          <tr>
+
+            <td>
+              <strong>#${String(p.numero).padStart(3, '0')}</strong>
+            </td>
+
+            <td>${p.nombre}</td>
+
+            <td>${p.telefono}</td>
+
+            <td>${p.cedula}</td>
+
+            <td>
+
+              <button
+                class="delete-btn"
+                onclick="eliminarParticipante(${index})"
+              >
+                Eliminar
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      });
+
+      contador.innerHTML =
+      `Total participantes: ${participantes.length}`;
+
+    }
+
+    function actualizarNumero(){
+
+      const siguiente = participantes.length + 1;
+
+      nextNumber.innerHTML =
+      "#" + String(siguiente).padStart(3, '0');
+
+    }
+
+    function eliminarParticipante(index){
+
+      participantes.splice(index,1);
+
+      // Reorganizar números automáticamente
+      participantes = participantes.map((p, i) => ({
+        ...p,
+        numero: i + 1
+      }));
+
+      localStorage.setItem(
+        "participantes",
+        JSON.stringify(participantes)
+      );
+
+      mostrarParticipantes();
+      actualizarNumero();
+
+    }
+
+  </script>
 
 </body>
 </html>
