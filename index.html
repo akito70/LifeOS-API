@@ -3,10 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>40 meses contigo 💚</title>
+
+<title>Para mi Esthercita 💚</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Pacifico&display=swap');
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+:root {
+    --mint: #bcefe0;
+    --mint-dark: #70c8ad;
+
+    --purple: #d9c8f5;
+    --purple-dark: #9b82c7;
+
+    --pink: #f5c9d9;
+    --pink-dark: #d995b2;
+
+    --cream: #fffafc;
+
+    --text: #62566b;
+    --text-light: #8c7c94;
+
+    --glass: rgba(255,255,255,.58);
+
+    --shadow:
+        0 25px 70px rgba(100,80,120,.13);
+}
+
+/* =====================================================
+   RESET
+===================================================== */
 
 * {
     margin: 0;
@@ -14,353 +48,1022 @@
     box-sizing: border-box;
 }
 
-body {
-    min-height: 100vh;
-    overflow-x: hidden;
-    font-family: 'Comfortaa', sans-serif;
-    background:
-        radial-gradient(circle at 15% 20%, rgba(255,255,255,.7) 0 2px, transparent 3px),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,.6) 0 2px, transparent 3px),
-        linear-gradient(135deg, #d8fff1, #eadcff, #ffe1ec);
-
-    background-size: 150px 150px, 190px 190px, 100% 100%;
-    color: #62516e;
+html {
+    scroll-behavior: smooth;
 }
 
-/* =========================
-   FONDO
-========================= */
+body {
+    font-family: "Comfortaa", sans-serif;
+    color: var(--text);
 
-.background {
+    background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,.9), transparent 22%),
+        radial-gradient(circle at 85% 30%, rgba(217,200,245,.45), transparent 25%),
+        radial-gradient(circle at 20% 80%, rgba(188,239,224,.55), transparent 25%),
+        linear-gradient(
+            135deg,
+            #dffff3,
+            #eee5ff,
+            #ffe8f0
+        );
+
+    overflow-x: hidden;
+}
+
+/* =====================================================
+   LOADER / INTRO
+===================================================== */
+
+.intro {
     position: fixed;
     inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-}
+    z-index: 9999;
 
-.cloud {
-    position: absolute;
-    background: rgba(255,255,255,.42);
-    filter: blur(2px);
-    border-radius: 100px;
-    animation: cloudMove 18s linear infinite;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.cloud.one {
-    width: 180px;
-    height: 55px;
-    top: 12%;
-    left: -200px;
-}
-
-.cloud.two {
-    width: 230px;
-    height: 65px;
-    top: 65%;
-    left: -250px;
-    animation-delay: 7s;
-}
-
-@keyframes cloudMove {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(100vw + 500px)); }
-}
-
-/* =========================
-   ESTRELLAS
-========================= */
-
-.sparkle {
-    position: absolute;
-    color: white;
-    font-size: 18px;
-    animation: sparkle 2s ease-in-out infinite;
-}
-
-@keyframes sparkle {
-    0%,100% {
-        opacity: .3;
-        transform: scale(.7) rotate(0);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2) rotate(20deg);
-    }
-}
-
-/* =========================
-   CONTENEDOR
-========================= */
-
-.container {
-    position: relative;
-    z-index: 2;
-    width: min(900px, 92%);
-    margin: auto;
-    padding: 55px 0;
     text-align: center;
+
+    background:
+        radial-gradient(circle at center, #f7f0ff, #dffff4);
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
 }
 
-/* =========================
-   TITULO
-========================= */
+.intro.hide {
+    opacity: 0;
+    visibility: hidden;
+}
 
-.small-title {
-    font-size: 15px;
+.intro-content {
+    width: min(90%, 500px);
+}
+
+.intro-cat {
+    font-size: 90px;
+    display: block;
+
+    animation:
+        catFloat 2.5s ease-in-out infinite;
+}
+
+.intro-small {
+    margin-top: 20px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #7d6b88;
-    margin-bottom: 10px;
-    animation: fadeDown 1s ease;
+    font-size: 12px;
+    color: var(--text-light);
 }
 
-h1 {
-    font-family: 'Pacifico', cursive;
-    font-size: clamp(45px, 10vw, 85px);
-    line-height: 1;
-    background: linear-gradient(90deg, #69c9aa, #a993dc, #e79ab5);
+.intro h1 {
+    margin: 15px 0;
+
+    font-family: "Pacifico", cursive;
+    font-size: clamp(42px, 11vw, 70px);
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--mint-dark),
+            var(--purple-dark),
+            var(--pink-dark)
+        );
+
     -webkit-background-clip: text;
     color: transparent;
-    animation: titleFloat 4s ease-in-out infinite;
 }
 
-@keyframes titleFloat {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
+.intro p {
+    line-height: 1.8;
+    margin-bottom: 25px;
 }
 
-.subtitle {
-    margin-top: 15px;
-    font-size: 17px;
-    color: #77657f;
-}
+.start-button {
+    border: none;
+    cursor: pointer;
 
-/* =========================
-   CONTADOR
-========================= */
+    padding: 16px 30px;
 
-.counter {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 30px auto;
-    flex-wrap: wrap;
-}
+    border-radius: 999px;
 
-.counter-box {
-    width: 90px;
-    padding: 15px 8px;
-    border-radius: 22px;
-    background: rgba(255,255,255,.55);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(104,80,120,.10);
-    animation: popIn .8s ease backwards;
-}
+    color: white;
 
-.counter-box:nth-child(2) { animation-delay: .15s; }
-.counter-box:nth-child(3) { animation-delay: .3s; }
+    font-family: inherit;
+    font-weight: 700;
 
-.counter-box strong {
-    display: block;
-    font-size: 25px;
-    color: #75bfa8;
-}
-
-.counter-box span {
-    font-size: 11px;
-    color: #88738f;
-}
-
-@keyframes popIn {
-    from {
-        opacity: 0;
-        transform: translateY(25px) scale(.8);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* =========================
-   GATITO
-========================= */
-
-.cat {
-    font-size: 75px;
-    margin: 15px auto;
-    display: inline-block;
-    animation: catBounce 2.5s ease-in-out infinite;
-    filter: drop-shadow(0 8px 8px rgba(100,70,110,.15));
-}
-
-@keyframes catBounce {
-    0%,100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-12px) rotate(3deg); }
-}
-
-/* =========================
-   CARTA
-========================= */
-
-.envelope-area {
-    margin: 30px auto;
-    perspective: 1000px;
-}
-
-.envelope {
-    width: min(650px, 100%);
-    min-height: 360px;
-    margin: auto;
-    padding: 45px 35px;
-    border-radius: 32px;
-
-    background: rgba(255,255,255,.68);
-    backdrop-filter: blur(18px);
-
-    border: 2px solid rgba(255,255,255,.8);
+    background:
+        linear-gradient(
+            100deg,
+            #76cdb0,
+            #a48bd0,
+            #df9db9
+        );
 
     box-shadow:
-        0 25px 70px rgba(96,72,110,.15),
-        inset 0 0 30px rgba(255,255,255,.4);
-
-    transform-style: preserve-3d;
-
-    animation: cardAppear 1.2s ease;
-}
-
-@keyframes cardAppear {
-    from {
-        opacity: 0;
-        transform: translateY(40px) rotateX(10deg);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) rotateX(0);
-    }
-}
-
-.letter-title {
-    font-family: 'Pacifico', cursive;
-    font-size: 35px;
-    color: #8d75ad;
-    margin-bottom: 20px;
-}
-
-.letter {
-    text-align: left;
-    line-height: 1.9;
-    font-size: 15px;
-    color: #66576d;
-}
-
-.letter p {
-    margin-bottom: 17px;
-}
-
-.highlight {
-    color: #62ae96;
-    font-weight: 700;
-}
-
-/* =========================
-   CORAZON
-========================= */
-
-.heart {
-    font-size: 55px;
-    margin: 10px;
-    display: inline-block;
-    animation: heartbeat 1.5s infinite;
-}
-
-@keyframes heartbeat {
-    0%,100% { transform: scale(1); }
-    15% { transform: scale(1.18); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.12); }
-}
-
-/* =========================
-   FRASE FINAL
-========================= */
-
-.final-message {
-    margin-top: 30px;
-    padding: 25px;
-    border-radius: 25px;
-    background: linear-gradient(
-        135deg,
-        rgba(207,255,238,.75),
-        rgba(228,216,255,.75)
-    );
-    box-shadow: 0 15px 40px rgba(110,80,130,.1);
-}
-
-.final-message h2 {
-    font-family: 'Pacifico', cursive;
-    color: #7b69a0;
-    font-size: 28px;
-}
-
-.final-message p {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-/* =========================
-   BOTON
-========================= */
-
-.love-button {
-    border: none;
-    margin-top: 25px;
-    padding: 15px 28px;
-    border-radius: 100px;
-
-    font-family: 'Comfortaa';
-    font-weight: 700;
-    color: #fff;
-
-    background: linear-gradient(
-        90deg,
-        #75cdb0,
-        #a992d7,
-        #df9bb5
-    );
-
-    box-shadow: 0 10px 25px rgba(130,100,150,.2);
-    cursor: pointer;
+        0 12px 35px rgba(120,100,140,.2);
 
     transition: .3s;
 }
 
-.love-button:hover {
+.start-button:hover {
     transform: translateY(-4px) scale(1.04);
 }
 
-.love-button:active {
-    transform: scale(.95);
-}
+/* =====================================================
+   FLOATING BACKGROUND
+===================================================== */
 
-/* =========================
-   CORAZONES FLOTANTES
-========================= */
-
-.floating-heart {
+.background {
     position: fixed;
-    bottom: -40px;
-    font-size: 20px;
-    pointer-events: none;
-    z-index: 10;
+    inset: 0;
+    z-index: -1;
 
-    animation: floatHeart linear forwards;
+    overflow: hidden;
+
+    pointer-events: none;
 }
 
-@keyframes floatHeart {
+.blob {
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    filter: blur(60px);
+
+    opacity: .45;
+
+    animation: blobMove 15s ease-in-out infinite alternate;
+}
+
+.blob:nth-child(1) {
+    background: var(--mint);
+    top: -100px;
+    left: -100px;
+}
+
+.blob:nth-child(2) {
+    background: var(--purple);
+    right: -100px;
+    top: 30%;
+    animation-delay: 3s;
+}
+
+.blob:nth-child(3) {
+    background: var(--pink);
+    bottom: -100px;
+    left: 30%;
+    animation-delay: 6s;
+}
+
+@keyframes blobMove {
+    from {
+        transform: translate(0,0) scale(1);
+    }
+
+    to {
+        transform: translate(70px,-40px) scale(1.2);
+    }
+}
+
+.sparkle {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+
+    animation:
+        sparkle 2.5s ease-in-out infinite;
+}
+
+.s1 {
+    top: 12%;
+    left: 10%;
+}
+
+.s2 {
+    top: 22%;
+    right: 13%;
+    animation-delay: .7s;
+}
+
+.s3 {
+    top: 65%;
+    left: 8%;
+    animation-delay: 1.2s;
+}
+
+.s4 {
+    top: 78%;
+    right: 15%;
+    animation-delay: .3s;
+}
+
+@keyframes sparkle {
+    0%,100% {
+        opacity: .2;
+        transform: scale(.7) rotate(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(25deg);
+    }
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main {
+    opacity: 0;
+    transform: translateY(25px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+main.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+section {
+    width: min(1000px, 90%);
+    margin: auto;
+    padding: 100px 0;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.hero-cat {
+    font-size: 90px;
+
+    animation:
+        catFloat 3s ease-in-out infinite;
+
+    filter:
+        drop-shadow(
+            0 15px 10px rgba(80,70,100,.12)
+        );
+}
+
+@keyframes catFloat {
+    0%,100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(3deg);
+    }
+}
+
+.hero-subtitle {
+    margin-top: 25px;
+
+    letter-spacing: 4px;
+
+    font-size: 12px;
+    text-transform: uppercase;
+
+    color: var(--text-light);
+}
+
+.hero h1 {
+    margin-top: 12px;
+
+    font-family: "Pacifico", cursive;
+
+    font-size: clamp(55px, 14vw, 110px);
+
+    line-height: 1.05;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--mint-dark),
+            var(--purple-dark),
+            var(--pink-dark)
+        );
+
+    -webkit-background-clip: text;
+    color: transparent;
+
+    animation:
+        titleFloat 4s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.hero-description {
+    max-width: 550px;
+
+    margin-top: 20px;
+
+    line-height: 1.9;
+
+    color: var(--text-light);
+}
+
+.scroll {
+    margin-top: 45px;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    animation:
+        scrollFloat 2s ease-in-out infinite;
+}
+
+@keyframes scrollFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-label {
+    text-align: center;
+
+    text-transform: uppercase;
+
+    letter-spacing: 3px;
+
+    font-size: 11px;
+
+    color: var(--mint-dark);
+}
+
+.section-title {
+    text-align: center;
+
+    margin-top: 10px;
+
+    font-family: "DM Serif Display", serif;
+
+    font-size: clamp(38px, 7vw, 60px);
+
+    color: var(--text);
+}
+
+.section-description {
+    max-width: 650px;
+
+    margin: 15px auto 45px;
+
+    text-align: center;
+
+    line-height: 1.8;
+
+    color: var(--text-light);
+}
+
+/* =====================================================
+   COUNTER
+===================================================== */
+
+.counter-wrapper {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    max-width: 650px;
+
+    margin: auto;
+}
+
+.counter-box {
+    padding: 25px 10px;
+
+    border-radius: 25px;
+
+    background: var(--glass);
+
+    backdrop-filter: blur(15px);
+
+    border:
+        1px solid rgba(255,255,255,.8);
+
+    box-shadow: var(--shadow);
+
+    text-align: center;
+}
+
+.counter-number {
+    display: block;
+
+    font-family:
+        "DM Serif Display",
+        serif;
+
+    font-size: 40px;
+
+    color: var(--purple-dark);
+}
+
+.counter-label {
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    color: var(--text-light);
+}
+
+/* =====================================================
+   STORY
+===================================================== */
+
+.story {
+    position: relative;
+}
+
+.timeline {
+    position: relative;
+
+    max-width: 700px;
+
+    margin: auto;
+}
+
+.timeline::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 0;
+    bottom: 0;
+
+    width: 2px;
+
+    background:
+        linear-gradient(
+            var(--mint-dark),
+            var(--purple-dark),
+            var(--pink-dark)
+        );
+
+    transform: translateX(-50%);
+}
+
+.story-card {
+    position: relative;
+
+    width: 45%;
+
+    padding: 25px;
+
+    margin-bottom: 35px;
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,.6);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow: var(--shadow);
+
+    border:
+        1px solid rgba(255,255,255,.8);
+}
+
+.story-card:nth-child(odd) {
+    margin-right: auto;
+}
+
+.story-card:nth-child(even) {
+    margin-left: auto;
+}
+
+.story-dot {
+    position: absolute;
+
+    top: 25px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    border:
+        4px solid var(--purple-dark);
+
+    box-shadow:
+        0 0 0 5px rgba(155,130,199,.12);
+}
+
+.story-card:nth-child(odd) .story-dot {
+    right: -42px;
+}
+
+.story-card:nth-child(even) .story-dot {
+    left: -42px;
+}
+
+.story-icon {
+    font-size: 30px;
+}
+
+.story-card h3 {
+    margin: 10px 0;
+
+    font-family:
+        "DM Serif Display",
+        serif;
+
+    font-size: 25px;
+}
+
+.story-card p {
+    line-height: 1.8;
+
+    font-size: 14px;
+
+    color: var(--text-light);
+}
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+.music-card {
+    max-width: 650px;
+
+    margin: auto;
+
+    padding: 30px;
+
+    border-radius: 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.7),
+            rgba(238,224,255,.7)
+        );
+
+    box-shadow: var(--shadow);
+
+    text-align: center;
+}
+
+.music-disc {
+    width: 100px;
+    height: 100px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 45px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--mint),
+            var(--purple),
+            var(--pink)
+        );
+
+    box-shadow:
+        0 15px 35px rgba(100,80,120,.18);
+
+    animation:
+        discSpin 8s linear infinite;
+
+    animation-play-state: paused;
+}
+
+.music-card.playing .music-disc {
+    animation-play-state: running;
+}
+
+@keyframes discSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.music-card h3 {
+    margin-top: 20px;
+
+    font-family:
+        "DM Serif Display",
+        serif;
+
+    font-size: 30px;
+}
+
+.music-card p {
+    margin-top: 7px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.music-button {
+    margin-top: 22px;
+
+    padding: 13px 25px;
+
+    border: none;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    background: var(--mint);
+
+    color: #547e70;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    transition: .3s;
+}
+
+.music-button:hover {
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   GALLERY
+===================================================== */
+
+.gallery {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.photo {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 25px;
+
+    aspect-ratio: 1 / 1;
+
+    background: #eee;
+
+    box-shadow: var(--shadow);
+
+    cursor: pointer;
+}
+
+.photo:nth-child(2),
+.photo:nth-child(5) {
+    transform: translateY(30px);
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform .7s ease,
+        filter .7s ease;
+}
+
+.photo:hover img {
+    transform: scale(1.08);
+
+    filter: brightness(.85);
+}
+
+.photo-caption {
+    position: absolute;
+
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+
+    padding: 10px;
+
+    border-radius: 15px;
+
+    color: white;
+
+    background: rgba(60,50,70,.45);
+
+    backdrop-filter: blur(8px);
+
+    font-size: 11px;
+
+    opacity: 0;
+
+    transform: translateY(10px);
+
+    transition: .4s;
+}
+
+.photo:hover .photo-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   DIFFICULT MOMENTS
+===================================================== */
+
+.difficult {
+    text-align: center;
+}
+
+.quote-card {
+    max-width: 700px;
+
+    margin: auto;
+
+    padding: 45px 35px;
+
+    border-radius: 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(220,255,243,.7),
+            rgba(232,218,255,.7)
+        );
+
+    box-shadow: var(--shadow);
+}
+
+.quote-mark {
+    font-family: Georgia, serif;
+
+    font-size: 80px;
+
+    line-height: .5;
+
+    color: var(--purple-dark);
+
+    opacity: .5;
+}
+
+.quote-card p {
+    margin-top: 20px;
+
+    font-family:
+        "DM Serif Display",
+        serif;
+
+    font-size: 24px;
+
+    line-height: 1.7;
+}
+
+.quote-card small {
+    display: block;
+
+    margin-top: 20px;
+
+    color: var(--text-light);
+
+    line-height: 1.7;
+}
+
+/* =====================================================
+   LETTER
+===================================================== */
+
+.letter-container {
+    max-width: 750px;
+
+    margin: auto;
+
+    padding: 50px 45px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.75),
+            rgba(255,245,250,.7)
+        );
+
+    box-shadow: var(--shadow);
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    position: relative;
+}
+
+.letter-container::before {
+    content: "♡";
+
+    position: absolute;
+
+    top: 20px;
+    right: 30px;
+
+    font-size: 35px;
+
+    color: var(--pink-dark);
+
+    opacity: .5;
+}
+
+.letter-title {
+    font-family:
+        "Pacifico",
+        cursive;
+
+    font-size: 35px;
+
+    color: var(--purple-dark);
+
+    margin-bottom: 25px;
+}
+
+.letter p {
+    font-size: 15px;
+
+    line-height: 2;
+
+    margin-bottom: 18px;
+}
+
+.highlight {
+    color: var(--mint-dark);
+
+    font-weight: 700;
+}
+
+.signature {
+    margin-top: 35px;
+
+    text-align: right;
+
+    font-family:
+        "Pacifico",
+        cursive;
+
+    font-size: 25px;
+
+    color: var(--pink-dark);
+}
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+.final {
+    min-height: 90vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+.final-content {
+    max-width: 700px;
+}
+
+.final-cat {
+    font-size: 85px;
+
+    animation:
+        catFloat 3s ease-in-out infinite;
+}
+
+.final h2 {
+    margin-top: 15px;
+
+    font-family:
+        "Pacifico",
+        cursive;
+
+    font-size: clamp(42px, 9vw, 75px);
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--mint-dark),
+            var(--purple-dark),
+            var(--pink-dark)
+        );
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+.final p {
+    margin-top: 20px;
+
+    line-height: 2;
+
+    color: var(--text-light);
+}
+
+.infinity {
+    display: block;
+
+    margin-top: 25px;
+
+    font-size: 55px;
+
+    color: var(--purple-dark);
+
+    animation:
+        infinityPulse 2s infinite;
+}
+
+@keyframes infinityPulse {
+    0%,100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+/* =====================================================
+   FLOATING HEARTS
+===================================================== */
+
+.floating {
+    position: fixed;
+
+    bottom: -40px;
+
+    pointer-events: none;
+
+    z-index: 1000;
+
+    animation:
+        heartFloat linear forwards;
+}
+
+@keyframes heartFloat {
+
     0% {
-        transform: translateY(0) rotate(0);
+        transform:
+            translateY(0)
+            rotate(0);
+
         opacity: 0;
     }
 
@@ -372,270 +1075,1156 @@ h1 {
         transform:
             translateY(-110vh)
             rotate(360deg);
+
         opacity: 0;
     }
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
-footer {
-    margin-top: 35px;
-    font-size: 12px;
-    color: #88768e;
-}
+@media(max-width:700px) {
 
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =========================
-   MOVIL
-========================= */
-
-@media(max-width:600px) {
-
-    .container {
-        padding: 35px 0;
+    section {
+        padding: 75px 0;
     }
 
-    .envelope {
-        padding: 30px 22px;
-        border-radius: 25px;
-    }
+    .counter-wrapper {
+        grid-template-columns:
+            repeat(3, 1fr);
 
-    .letter {
-        font-size: 14px;
-        line-height: 1.8;
-    }
-
-    .cat {
-        font-size: 65px;
+        gap: 8px;
     }
 
     .counter-box {
-        width: 82px;
+        padding: 18px 5px;
+    }
+
+    .counter-number {
+        font-size: 32px;
+    }
+
+    .timeline::before {
+        left: 15px;
+    }
+
+    .story-card,
+    .story-card:nth-child(odd),
+    .story-card:nth-child(even) {
+
+        width: calc(100% - 45px);
+
+        margin-left: 45px;
+
+        margin-right: 0;
+    }
+
+    .story-card:nth-child(odd) .story-dot,
+    .story-card:nth-child(even) .story-dot {
+
+        left: -38px;
+        right: auto;
+    }
+
+    .gallery {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 12px;
+    }
+
+    .photo:nth-child(2),
+    .photo:nth-child(5) {
+        transform: none;
+    }
+
+    .letter-container {
+        padding: 35px 22px;
+    }
+
+    .letter p {
+        font-size: 14px;
+        line-height: 1.9;
+    }
+
+    .quote-card {
+        padding: 35px 22px;
+    }
+
+    .quote-card p {
+        font-size: 20px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="background">
 
-    <div class="cloud one"></div>
-    <div class="cloud two"></div>
+<!-- =====================================================
+     INTRO
+===================================================== -->
 
-    <div class="sparkle" style="top:12%;left:15%">✦</div>
-    <div class="sparkle" style="top:20%;right:18%;animation-delay:.5s">✧</div>
-    <div class="sparkle" style="top:45%;left:8%;animation-delay:1s">✦</div>
-    <div class="sparkle" style="top:70%;right:10%;animation-delay:.8s">✧</div>
-    <div class="sparkle" style="top:82%;left:20%;animation-delay:1.4s">✦</div>
+<div class="intro" id="intro">
 
-</div>
+    <div class="intro-content">
 
+        <span class="intro-cat">🐱</span>
 
-<div class="container">
-
-    <div class="small-title">
-        Una pequeña carta para ti
-    </div>
-
-    <h1>40 meses ❤️</h1>
-
-    <div class="subtitle">
-        Desde el 5 de mayo de 2023 hasta hoy...
-    </div>
-
-
-    <div class="counter">
-
-        <div class="counter-box">
-            <strong>3</strong>
-            <span>Años</span>
+        <div class="intro-small">
+            tengo algo para ti...
         </div>
 
-        <div class="counter-box">
-            <strong>4</strong>
-            <span>Meses</span>
-        </div>
-
-        <div class="counter-box">
-            <strong>40</strong>
-            <span>Meses juntos</span>
-        </div>
-
-    </div>
-
-
-    <div class="cat">
-        🐱
-    </div>
-
-
-    <div class="envelope-area">
-
-        <div class="envelope">
-
-            <div class="letter-title">
-                Para mi niña 💚
-            </div>
-
-            <div class="letter">
-
-                <p>
-                    Amor, hoy cumplimos <span class="highlight">40 meses</span>.
-                    🥺💚
-                </p>
-
-                <p>
-                    Puede sonar simplemente como un número, pero para mí
-                    representa muchísimo más que eso.
-                </p>
-
-                <p>
-                    Son 40 meses de momentos que hemos compartido,
-                    de risas, abrazos, conversaciones, problemas,
-                    reconciliaciones, aventuras y recuerdos que solamente
-                    nosotros conocemos.
-                </p>
-
-                <p>
-                    Hemos cambiado muchísimo desde aquel
-                    <span class="highlight">5 de mayo de 2023</span>.
-                    Hemos crecido, aprendido y también hemos tenido días
-                    que no fueron precisamente los mejores.
-                </p>
-
-                <p>
-                    Y aunque no siempre todo salga perfecto,
-                    hay algo que sigue siendo especial:
-                    <strong>que seguimos escribiendo nuestra historia.</strong>
-                </p>
-
-                <p>
-                    Quiero que sepas que sigo apreciando cada pequeño
-                    momento contigo. Incluso esos momentos simples que
-                    quizás parecen insignificantes, para mí terminan
-                    convirtiéndose en recuerdos que quiero guardar.
-                </p>
-
-                <p>
-                    Gracias por estos <span class="highlight">3 años y 4 meses</span>.
-                    Gracias por formar parte de mi vida y por todas las
-                    cosas bonitas que hemos vivido.
-                </p>
-
-                <p>
-                    Espero que podamos seguir sumando meses,
-                    años y muchísimas historias más.
-                </p>
-
-                <p style="text-align:center;">
-                    Te amo muchísimo. 💚💜🩷
-                </p>
-
-            </div>
-
-
-            <div class="heart">
-                💗
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="final-message">
-
-        <h2>
-            Y esto apenas es otro capítulo...
-        </h2>
+        <h1>Esthercita</h1>
 
         <p>
-            Feliz 40 meses, mi amor.
-            🐱💚💜🩷
+            Hice este pequeño rincón para guardar
+            un poquito de nuestra historia.
         </p>
 
-        <button class="love-button" onclick="celebrate()">
-            Toca aquí, gatita 🐱✨
+        <button
+            class="start-button"
+            onclick="startExperience()"
+        >
+            Abrir mi sorpresa ♡
         </button>
 
     </div>
 
+</div>
 
-    <footer>
-        Hecho con mucho cariño para ti ♡
-    </footer>
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="background">
+
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <span class="sparkle s1">✦</span>
+    <span class="sparkle s2">✧</span>
+    <span class="sparkle s3">✦</span>
+    <span class="sparkle s4">✧</span>
 
 </div>
 
 
+<main id="main">
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-cat">
+        🐱
+    </div>
+
+    <div class="hero-subtitle">
+        para mi Esthercita
+    </div>
+
+    <h1>
+        40 meses
+    </h1>
+
+    <p class="hero-description">
+
+        Una pequeña página para recordar
+        cómo comenzó nuestra historia,
+        todo lo que hemos vivido y,
+        sobre todo, celebrar que seguimos
+        escribiéndola juntos.
+
+    </p>
+
+    <div class="scroll">
+        ↓ baja despacito ↓
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COUNTER
+===================================================== -->
+
+<section>
+
+    <div class="section-label">
+        nuestra fecha
+    </div>
+
+    <h2 class="section-title">
+        Desde aquel 5 de mayo...
+    </h2>
+
+    <p class="section-description">
+
+        El día en que una pregunta cambió
+        nuestras vidas para siempre.
+
+    </p>
+
+
+    <div class="counter-wrapper">
+
+        <div class="counter-box">
+            <span class="counter-number">3</span>
+            <span class="counter-label">años</span>
+        </div>
+
+        <div class="counter-box">
+            <span class="counter-number">4</span>
+            <span class="counter-label">meses</span>
+        </div>
+
+        <div class="counter-box">
+            <span class="counter-number">40</span>
+            <span class="counter-label">meses juntos</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HISTORIA
+===================================================== -->
+
+<section class="story">
+
+    <div class="section-label">
+        cómo empezó todo
+    </div>
+
+    <h2 class="section-title">
+        Nuestra historia
+    </h2>
+
+    <p class="section-description">
+
+        Y pensar que todo comenzó de una manera
+        bastante inesperada... 😂
+
+    </p>
+
+
+    <div class="timeline">
+
+
+        <!-- 1 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                🏫
+            </div>
+
+            <h3>
+                Primero fue la escuela
+            </h3>
+
+            <p>
+
+                Nos conocimos en la escuela.
+
+                Aunque yo no lo sabía,
+                tú ya sentías algo por mí
+                desde aproximadamente un año antes.
+
+                Mientras tanto, tú siempre
+                terminabas llamando mi atención
+                por tu personalidad.
+
+            </p>
+
+        </div>
+
+
+        <!-- 2 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                🎭
+            </div>
+
+            <h3>
+                La obra de teatro
+            </h3>
+
+            <p>
+
+                Después llegó aquella obra de teatro
+                donde los dos éramos pareja.
+
+                Y quizás fue ahí donde todo comenzó
+                a cambiar poquito a poquito.
+
+            </p>
+
+        </div>
+
+
+        <!-- 3 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                🏐
+            </div>
+
+            <h3>
+                El famoso balón
+            </h3>
+
+            <p>
+
+                Yo siempre te pasaba el balón
+                cuando jugábamos voleibol.
+
+                Hasta que un día te lo pasé
+                y tú me lo rechazaste...
+
+                porque ya tenías que irte. 😂
+
+                Y aunque fue completamente accidental,
+                terminó siendo parte de nuestra historia.
+
+            </p>
+
+        </div>
+
+
+        <!-- 4 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                📱
+            </div>
+
+            <h3>
+                Un meme cambió todo
+            </h3>
+
+            <p>
+
+                Después vino aquella historia de Instagram
+                en la que te etiqueté con un meme.
+
+                Tú respondiste.
+
+                Y empezamos a hablar.
+
+            </p>
+
+        </div>
+
+
+        <!-- 5 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                🎮
+            </div>
+
+            <h3>
+                Minecraft
+            </h3>
+
+            <p>
+
+                Después llegaron nuestras partidas
+                de Minecraft.
+
+                Entre juegos, conversaciones
+                y tiempo juntos...
+
+                me di cuenta de que realmente
+                me gustabas.
+
+            </p>
+
+        </div>
+
+
+        <!-- 6 -->
+
+        <div class="story-card">
+
+            <div class="story-dot"></div>
+
+            <div class="story-icon">
+                ❤️
+            </div>
+
+            <h3>
+                5 de mayo de 2023
+            </h3>
+
+            <p>
+
+                Unas semanas después de empezar
+                a hablar, te dije que me gustabas.
+
+                Y llegó ese día.
+
+                Te pregunté si podíamos ser novios.
+
+                Y tú dijiste que sí.
+
+                ❤️
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MUSIC
+===================================================== -->
+
+<section>
+
+    <div class="section-label">
+        nuestra canción
+    </div>
+
+    <h2 class="section-title">
+        Electric Love
+    </h2>
+
+    <p class="section-description">
+
+        Porque algunas canciones simplemente
+        terminan teniendo un significado especial.
+
+    </p>
+
+
+    <div class="music-card" id="musicCard">
+
+        <div class="music-disc">
+            🎵
+        </div>
+
+        <h3>
+            Electric Love
+        </h3>
+
+        <p>
+            una canción que nos gusta a los dos ♡
+        </p>
+
+        <!--
+            Pon tu archivo de audio aquí:
+            musica/electric-love.mp3
+
+            IMPORTANTE:
+            usa un archivo que tengas permitido utilizar.
+        -->
+
+        <audio
+            id="song"
+            src="musica/electric-love.mp3"
+        ></audio>
+
+        <button
+            class="music-button"
+            onclick="toggleMusic()"
+            id="musicButton"
+        >
+            ▶ Reproducir
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     GALLERY
+===================================================== -->
+
+<section>
+
+    <div class="section-label">
+        nuestros recuerdos
+    </div>
+
+    <h2 class="section-title">
+        Un poquito de nosotros 📸
+    </h2>
+
+    <p class="section-description">
+
+        Algunas fotografías de todos esos pequeños
+        momentos que terminan formando una historia.
+
+    </p>
+
+
+    <div class="gallery">
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto1.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Nosotros ♡
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto2.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Una de tantas fotos juntos 💚
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto3.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Dos locos 😂
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto4.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Siempre juntos
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto5.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Aventuras 🌊
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto6.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Mi persona favorita ♡
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto7.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Otro recuerdo
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto8.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                Nosotros 🩷
+            </div>
+
+        </div>
+
+
+        <div class="photo">
+
+            <img
+                src="fotos/foto9.jpg"
+                alt="Nuestro recuerdo"
+            >
+
+            <div class="photo-caption">
+                40 meses 💚
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DIFFICULT MOMENTS
+===================================================== -->
+
+<section class="difficult">
+
+    <div class="section-label">
+        porque no todo fue perfecto
+    </div>
+
+    <h2 class="section-title">
+        Y aun así seguimos aquí
+    </h2>
+
+    <div class="quote-card">
+
+        <div class="quote-mark">
+            “
+        </div>
+
+        <p>
+
+            Hemos tenido días increíbles
+            y también días difíciles.
+
+            Hemos discutido,
+            nos hemos equivocado,
+            hemos tenido momentos en los que
+            parecía más fácil rendirse que seguir.
+
+        </p>
+
+        <small>
+
+            Pero si algo me gusta de nuestra historia
+            es que no está hecha de momentos perfectos.
+
+            Está hecha de dos personas que,
+            a pesar de todo lo que han vivido,
+            todavía siguen eligiéndose.
+
+        </small>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LETTER
+===================================================== -->
+
+<section>
+
+    <div class="section-label">
+        y ahora...
+    </div>
+
+    <h2 class="section-title">
+        Una carta para ti 💌
+    </h2>
+
+
+    <div class="letter-container">
+
+        <div class="letter-title">
+            Mi Esthercita,
+        </div>
+
+
+        <div class="letter">
+
+            <p>
+
+                Hoy cumplimos
+                <span class="highlight">
+                    40 meses
+                </span>
+                juntos.
+
+                Y mientras pensaba en qué podía hacer
+                para este día, terminé pensando en cómo
+                comenzó todo.
+
+            </p>
+
+
+            <p>
+
+                Es curioso pensar que tú ya gustabas de mí
+                desde hacía tiempo y yo ni siquiera lo sabía.
+
+                Yo solamente sabía que había algo en ti,
+                especialmente en tu personalidad,
+                que siempre conseguía llamar mi atención.
+
+            </p>
+
+
+            <p>
+
+                Después llegó aquella obra de teatro,
+                donde por casualidad terminamos siendo pareja.
+
+                Y luego aquel famoso balón de voleibol
+                que me rechazaste porque tenías que irte. 😂
+
+                Quién iba a pensar que después de eso
+                vendría un meme en Instagram,
+                nuestras conversaciones,
+                nuestras partidas de Minecraft
+                y finalmente nosotros.
+
+            </p>
+
+
+            <p>
+
+                Y llegó el
+                <span class="highlight">
+                    5 de mayo de 2023
+                </span>.
+
+                Ese día te pregunté si querías
+                ser mi novia.
+
+                Y dijiste que sí.
+
+            </p>
+
+
+            <p>
+
+                Desde entonces hemos vivido
+                muchísimas cosas.
+
+                Algunas hermosas,
+                algunas difíciles,
+                algunas que probablemente
+                solo nosotros entendemos.
+
+            </p>
+
+
+            <p>
+
+                Nuestra historia no ha sido perfecta.
+
+                Pero sinceramente,
+                no cambiaría la importancia
+                de todo lo que hemos aprendido.
+
+                Porque después de tantos momentos,
+                seguimos aquí.
+
+            </p>
+
+
+            <p>
+
+                Hoy quiero agradecerte por cada risa,
+                cada abrazo, cada conversación,
+                cada aventura y cada pequeño momento
+                que terminó convirtiéndose en un recuerdo.
+
+            </p>
+
+
+            <p>
+
+                Gracias por estos
+                <span class="highlight">
+                    3 años y 4 meses
+                </span>.
+
+            </p>
+
+
+            <p>
+
+                Y si pudiera pedir algo para nosotros,
+                pediría que todavía nos queden
+                muchísimos capítulos por escribir.
+
+                Más aventuras.
+
+                Más fotos.
+
+                Más Minecraft.
+
+                Más risas.
+
+                Más momentos absurdos.
+
+                Más días bonitos.
+
+                Y también la fuerza para superar
+                juntos los días que no lo sean.
+
+            </p>
+
+
+            <p>
+
+                Porque después de 40 meses,
+                todavía quiero seguir descubriendo
+                todo lo que podemos llegar a vivir.
+
+            </p>
+
+
+            <p style="text-align:center;">
+
+                Te amo muchísimo,
+                mi Esthercita.
+
+                💚💜🩷
+
+            </p>
+
+
+            <div class="signature">
+
+                — J ♡
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL
+===================================================== -->
+
+<section class="final">
+
+    <div class="final-content">
+
+        <div class="final-cat">
+            🐱
+        </div>
+
+        <div class="section-label">
+            05.05.2023 — 05.09.2026
+        </div>
+
+        <h2>
+            Y esto apenas
+            es otro capítulo...
+        </h2>
+
+        <p>
+
+            40 meses fueron suficientes
+            para construir una historia.
+
+            Y espero que sean solo una pequeña
+            parte de todo lo que todavía
+            nos falta vivir.
+
+        </p>
+
+        <span class="infinity">
+            ∞
+        </span>
+
+        <p>
+
+            <strong>
+                Feliz 40 meses, mi Esthercita.
+            </strong>
+
+            <br>
+
+            Te amo. 💚
+
+        </p>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
 <script>
 
-function createHeart() {
+/* =====================================================
+   INICIAR EXPERIENCIA
+===================================================== */
 
-    const heart = document.createElement("div");
+function startExperience() {
 
-    const hearts = ["💚","💜","🩷","💗","✨","🌸","🐱"];
+    const intro =
+        document.getElementById("intro");
 
-    heart.className = "floating-heart";
+    const main =
+        document.getElementById("main");
 
-    heart.innerHTML =
-        hearts[Math.floor(Math.random() * hearts.length)];
-
-    heart.style.left =
-        Math.random() * 100 + "vw";
-
-    heart.style.fontSize =
-        (15 + Math.random() * 20) + "px";
-
-    heart.style.animationDuration =
-        (4 + Math.random() * 4) + "s";
-
-    document.body.appendChild(heart);
+    intro.classList.add("hide");
 
     setTimeout(() => {
-        heart.remove();
-    }, 8000);
-}
+        main.classList.add("show");
+    }, 500);
 
+    /* lluvia inicial */
 
-/* Corazones automáticos */
-
-setInterval(createHeart, 900);
-
-
-/* Celebración */
-
-function celebrate() {
-
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < 15; i++) {
 
         setTimeout(() => {
-            createHeart();
-        }, i * 80);
+            createFloating();
+        }, i * 100);
 
     }
+}
 
-    const button = document.querySelector(".love-button");
 
-    button.innerHTML = "Te amo muchísimo 🥺💚";
+/* =====================================================
+   MUSICA
+===================================================== */
+
+const song =
+    document.getElementById("song");
+
+const musicCard =
+    document.getElementById("musicCard");
+
+const musicButton =
+    document.getElementById("musicButton");
+
+
+function toggleMusic() {
+
+    /*
+       Si todavía no colocaste
+       el archivo MP3, el navegador
+       mostrará un error.
+    */
+
+    if(song.paused) {
+
+        song.play()
+        .then(() => {
+
+            musicCard.classList.add("playing");
+
+            musicButton.innerHTML =
+                "❚❚ Pausar";
+
+        })
+        .catch(() => {
+
+            musicButton.innerHTML =
+                "⚠ Agrega la canción";
+
+        });
+
+    } else {
+
+        song.pause();
+
+        musicCard.classList.remove("playing");
+
+        musicButton.innerHTML =
+            "▶ Reproducir";
+    }
+}
+
+
+song.addEventListener("ended", () => {
+
+    musicCard.classList.remove("playing");
+
+    musicButton.innerHTML =
+        "▶ Reproducir";
+
+});
+
+
+/* =====================================================
+   CORAZONES FLOTANTES
+===================================================== */
+
+function createFloating() {
+
+    const element =
+        document.createElement("div");
+
+    element.className =
+        "floating";
+
+    const things = [
+        "💚",
+        "💜",
+        "🩷",
+        "💗",
+        "✨",
+        "🌸",
+        "🐱"
+    ];
+
+    element.innerHTML =
+        things[
+            Math.floor(
+                Math.random() * things.length
+            )
+        ];
+
+    element.style.left =
+        Math.random() * 100 + "vw";
+
+    element.style.fontSize =
+        (14 + Math.random() * 22) + "px";
+
+    element.style.animationDuration =
+        (5 + Math.random() * 5) + "s";
+
+    document.body.appendChild(element);
 
     setTimeout(() => {
-        button.innerHTML = "Toca aquí, gatita 🐱✨";
-    }, 3000);
+
+        element.remove();
+
+    }, 10000);
 }
+
+
+/* =====================================================
+   LLUVIA AUTOMATICA
+===================================================== */
+
+setInterval(() => {
+
+    createFloating();
+
+}, 1300);
+
+
+/* =====================================================
+   CLICK EN FOTOS
+===================================================== */
+
+document.querySelectorAll(".photo").forEach(photo => {
+
+    photo.addEventListener("click", () => {
+
+        photo.classList.toggle("selected");
+
+    });
+
+});
+
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+const observer =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting) {
+
+                    entry.target.style.opacity = "1";
+
+                    entry.target.style.transform =
+                        "translateY(0)";
+
+                }
+
+            });
+
+        },
+        {
+            threshold: .15
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        ".story-card, .counter-box, .music-card, .quote-card, .letter-container, .photo"
+    )
+    .forEach(element => {
+
+        element.style.opacity = "0";
+
+        element.style.transform =
+            "translateY(35px)";
+
+        element.style.transition =
+            "opacity .8s ease, transform .8s ease";
+
+        observer.observe(element);
+
+    });
 
 </script>
 
