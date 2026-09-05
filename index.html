@@ -1,500 +1,643 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>40 meses contigo 💚</title>
 
-  <title>Rifa Día de la Madre</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Pacifico&display=swap');
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Comfortaa', sans-serif;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.7) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,.6) 0 2px, transparent 3px),
+        linear-gradient(135deg, #d8fff1, #eadcff, #ffe1ec);
 
-  <style>
+    background-size: 150px 150px, 190px 190px, 100% 100%;
+    color: #62516e;
+}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins', sans-serif;
+/* =========================
+   FONDO
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.cloud {
+    position: absolute;
+    background: rgba(255,255,255,.42);
+    filter: blur(2px);
+    border-radius: 100px;
+    animation: cloudMove 18s linear infinite;
+}
+
+.cloud.one {
+    width: 180px;
+    height: 55px;
+    top: 12%;
+    left: -200px;
+}
+
+.cloud.two {
+    width: 230px;
+    height: 65px;
+    top: 65%;
+    left: -250px;
+    animation-delay: 7s;
+}
+
+@keyframes cloudMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(100vw + 500px)); }
+}
+
+/* =========================
+   ESTRELLAS
+========================= */
+
+.sparkle {
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%,100% {
+        opacity: .3;
+        transform: scale(.7) rotate(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(20deg);
+    }
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: min(900px, 92%);
+    margin: auto;
+    padding: 55px 0;
+    text-align: center;
+}
+
+/* =========================
+   TITULO
+========================= */
+
+.small-title {
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #7d6b88;
+    margin-bottom: 10px;
+    animation: fadeDown 1s ease;
+}
+
+h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(45px, 10vw, 85px);
+    line-height: 1;
+    background: linear-gradient(90deg, #69c9aa, #a993dc, #e79ab5);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: titleFloat 4s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+.subtitle {
+    margin-top: 15px;
+    font-size: 17px;
+    color: #77657f;
+}
+
+/* =========================
+   CONTADOR
+========================= */
+
+.counter {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px auto;
+    flex-wrap: wrap;
+}
+
+.counter-box {
+    width: 90px;
+    padding: 15px 8px;
+    border-radius: 22px;
+    background: rgba(255,255,255,.55);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(104,80,120,.10);
+    animation: popIn .8s ease backwards;
+}
+
+.counter-box:nth-child(2) { animation-delay: .15s; }
+.counter-box:nth-child(3) { animation-delay: .3s; }
+
+.counter-box strong {
+    display: block;
+    font-size: 25px;
+    color: #75bfa8;
+}
+
+.counter-box span {
+    font-size: 11px;
+    color: #88738f;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   GATITO
+========================= */
+
+.cat {
+    font-size: 75px;
+    margin: 15px auto;
+    display: inline-block;
+    animation: catBounce 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 8px 8px rgba(100,70,110,.15));
+}
+
+@keyframes catBounce {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+/* =========================
+   CARTA
+========================= */
+
+.envelope-area {
+    margin: 30px auto;
+    perspective: 1000px;
+}
+
+.envelope {
+    width: min(650px, 100%);
+    min-height: 360px;
+    margin: auto;
+    padding: 45px 35px;
+    border-radius: 32px;
+
+    background: rgba(255,255,255,.68);
+    backdrop-filter: blur(18px);
+
+    border: 2px solid rgba(255,255,255,.8);
+
+    box-shadow:
+        0 25px 70px rgba(96,72,110,.15),
+        inset 0 0 30px rgba(255,255,255,.4);
+
+    transform-style: preserve-3d;
+
+    animation: cardAppear 1.2s ease;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) rotateX(10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.letter-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 35px;
+    color: #8d75ad;
+    margin-bottom: 20px;
+}
+
+.letter {
+    text-align: left;
+    line-height: 1.9;
+    font-size: 15px;
+    color: #66576d;
+}
+
+.letter p {
+    margin-bottom: 17px;
+}
+
+.highlight {
+    color: #62ae96;
+    font-weight: 700;
+}
+
+/* =========================
+   CORAZON
+========================= */
+
+.heart {
+    font-size: 55px;
+    margin: 10px;
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    15% { transform: scale(1.18); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.12); }
+}
+
+/* =========================
+   FRASE FINAL
+========================= */
+
+.final-message {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 25px;
+    background: linear-gradient(
+        135deg,
+        rgba(207,255,238,.75),
+        rgba(228,216,255,.75)
+    );
+    box-shadow: 0 15px 40px rgba(110,80,130,.1);
+}
+
+.final-message h2 {
+    font-family: 'Pacifico', cursive;
+    color: #7b69a0;
+    font-size: 28px;
+}
+
+.final-message p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* =========================
+   BOTON
+========================= */
+
+.love-button {
+    border: none;
+    margin-top: 25px;
+    padding: 15px 28px;
+    border-radius: 100px;
+
+    font-family: 'Comfortaa';
+    font-weight: 700;
+    color: #fff;
+
+    background: linear-gradient(
+        90deg,
+        #75cdb0,
+        #a992d7,
+        #df9bb5
+    );
+
+    box-shadow: 0 10px 25px rgba(130,100,150,.2);
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.love-button:hover {
+    transform: translateY(-4px) scale(1.04);
+}
+
+.love-button:active {
+    transform: scale(.95);
+}
+
+/* =========================
+   CORAZONES FLOTANTES
+========================= */
+
+.floating-heart {
+    position: fixed;
+    bottom: -40px;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 10;
+
+    animation: floatHeart linear forwards;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 0;
     }
 
-    body{
-      min-height:100vh;
-      background:
-      linear-gradient(135deg,#ff3d81,#ff76a8,#ffc1d6);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:30px;
-      overflow-x:hidden;
+    15% {
+        opacity: 1;
     }
 
-    .container{
-      width:100%;
-      max-width:1100px;
-      background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(15px);
-      border-radius:30px;
-      padding:35px;
-      box-shadow:
-      0 15px 40px rgba(0,0,0,0.15);
-      position:relative;
-      overflow:hidden;
+    100% {
+        transform:
+            translateY(-110vh)
+            rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 35px;
+    font-size: 12px;
+    color: #88768e;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   MOVIL
+========================= */
+
+@media(max-width:600px) {
+
+    .container {
+        padding: 35px 0;
     }
 
-    .container::before{
-      content:'';
-      position:absolute;
-      width:250px;
-      height:250px;
-      background:rgba(255,255,255,0.2);
-      border-radius:50%;
-      top:-100px;
-      right:-100px;
+    .envelope {
+        padding: 30px 22px;
+        border-radius: 25px;
     }
 
-    .container::after{
-      content:'';
-      position:absolute;
-      width:200px;
-      height:200px;
-      background:rgba(255,255,255,0.15);
-      border-radius:50%;
-      bottom:-80px;
-      left:-80px;
+    .letter {
+        font-size: 14px;
+        line-height: 1.8;
     }
 
-    .header{
-      text-align:center;
-      margin-bottom:35px;
-      position:relative;
-      z-index:2;
+    .cat {
+        font-size: 65px;
     }
 
-    .header h1{
-      font-size:2.5rem;
-      color:#d81b60;
-      margin-bottom:10px;
-      font-weight:700;
+    .counter-box {
+        width: 82px;
     }
-
-    .header p{
-      color:#666;
-      font-size:15px;
-    }
-
-    .ticket-preview{
-      background:
-      linear-gradient(135deg,#ff4f8b,#d81b60);
-      color:white;
-      border-radius:25px;
-      padding:25px;
-      margin-bottom:30px;
-      text-align:center;
-      box-shadow:
-      0 10px 25px rgba(216,27,96,0.3);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .ticket-preview::before{
-      content:'🎀';
-      position:absolute;
-      font-size:80px;
-      opacity:0.12;
-      right:15px;
-      top:-10px;
-    }
-
-    .ticket-preview h2{
-      font-size:16px;
-      margin-bottom:8px;
-      font-weight:400;
-    }
-
-    .ticket-number{
-      font-size:3rem;
-      font-weight:700;
-      letter-spacing:3px;
-    }
-
-    form{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:20px;
-      margin-bottom:35px;
-      position:relative;
-      z-index:2;
-    }
-
-    .full{
-      grid-column:1/3;
-    }
-
-    .input-group{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    label{
-      font-size:14px;
-      color:#444;
-      font-weight:600;
-    }
-
-    input{
-      border:none;
-      background:#f7f7f7;
-      padding:15px;
-      border-radius:15px;
-      font-size:15px;
-      outline:none;
-      transition:0.3s;
-    }
-
-    input:focus{
-      background:white;
-      box-shadow:
-      0 0 0 4px rgba(255,61,129,0.18);
-      transform:translateY(-1px);
-    }
-
-    .btn{
-      border:none;
-      background:
-      linear-gradient(135deg,#ff3d81,#d81b60);
-      color:white;
-      padding:16px;
-      border-radius:18px;
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.3s;
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-      box-shadow:
-      0 10px 25px rgba(216,27,96,0.3);
-    }
-
-    .table-container{
-      overflow-x:auto;
-      position:relative;
-      z-index:2;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:20px;
-    }
-
-    thead{
-      background:
-      linear-gradient(135deg,#ff4f8b,#d81b60);
-      color:white;
-    }
-
-    th{
-      padding:18px;
-      font-size:14px;
-      font-weight:600;
-    }
-
-    td{
-      padding:16px;
-      text-align:center;
-      border-bottom:1px solid #f0f0f0;
-      color:#444;
-    }
-
-    tbody tr{
-      background:white;
-      transition:0.2s;
-    }
-
-    tbody tr:hover{
-      background:#fff1f6;
-    }
-
-    .delete-btn{
-      border:none;
-      background:#ff4d4d;
-      color:white;
-      padding:10px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:500;
-      transition:0.3s;
-    }
-
-    .delete-btn:hover{
-      background:#d60000;
-    }
-
-    .footer{
-      margin-top:25px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:15px;
-    }
-
-    .counter{
-      color:#555;
-      font-weight:600;
-      font-size:15px;
-    }
-
-    .badge{
-      background:#ffe0ec;
-      color:#d81b60;
-      padding:10px 18px;
-      border-radius:50px;
-      font-size:14px;
-      font-weight:600;
-    }
-
-    @media(max-width:768px){
-
-      .container{
-        padding:22px;
-      }
-
-      form{
-        grid-template-columns:1fr;
-      }
-
-      .full{
-        grid-column:auto;
-      }
-
-      .header h1{
-        font-size:2rem;
-      }
-
-      .ticket-number{
-        font-size:2.3rem;
-      }
-
-    }
-
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="background">
 
-    <div class="header">
-      <h1>🌸 Rifa Día de la Madre 🌸</h1>
-      <p>Sistema de registro de participantes</p>
+    <div class="cloud one"></div>
+    <div class="cloud two"></div>
+
+    <div class="sparkle" style="top:12%;left:15%">✦</div>
+    <div class="sparkle" style="top:20%;right:18%;animation-delay:.5s">✧</div>
+    <div class="sparkle" style="top:45%;left:8%;animation-delay:1s">✦</div>
+    <div class="sparkle" style="top:70%;right:10%;animation-delay:.8s">✧</div>
+    <div class="sparkle" style="top:82%;left:20%;animation-delay:1.4s">✦</div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="small-title">
+        Una pequeña carta para ti
     </div>
 
-    <div class="ticket-preview">
-      <h2>Próximo Número de Rifa</h2>
-      <div class="ticket-number" id="nextNumber">
-        #001
-      </div>
+    <h1>40 meses ❤️</h1>
+
+    <div class="subtitle">
+        Desde el 5 de mayo de 2023 hasta hoy...
     </div>
 
-    <form id="rifaForm">
 
-      <div class="input-group">
-        <label>Nombre Completo</label>
+    <div class="counter">
 
-        <input
-          type="text"
-          id="nombre"
-          placeholder="Ingrese el nombre completo"
-          required
-        />
-      </div>
+        <div class="counter-box">
+            <strong>3</strong>
+            <span>Años</span>
+        </div>
 
-      <div class="input-group">
-        <label>Número de Teléfono</label>
+        <div class="counter-box">
+            <strong>4</strong>
+            <span>Meses</span>
+        </div>
 
-        <input
-          type="tel"
-          id="telefono"
-          placeholder="8888-8888"
-          required
-        />
-      </div>
-
-      <div class="input-group full">
-        <label>Cédula</label>
-
-        <input
-          type="text"
-          id="cedula"
-          placeholder="Ingrese la cédula"
-          
-        />
-      </div>
-
-      <button class="btn full" type="submit">
-        Registrar Participante
-      </button>
-
-    </form>
-
-    <div class="table-container">
-
-      <table>
-
-        <thead>
-          <tr>
-            <th>Rifa</th>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Cédula</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-
-        <tbody id="tablaParticipantes"></tbody>
-
-      </table>
+        <div class="counter-box">
+            <strong>40</strong>
+            <span>Meses juntos</span>
+        </div>
 
     </div>
 
-    <div class="footer">
 
-      <div class="counter" id="contador">
-        Total participantes: 0
-      </div>
+    <div class="cat">
+        🐱
+    </div>
 
-      <div class="badge">
-        🎟️ Sorteo Especial
-      </div>
+
+    <div class="envelope-area">
+
+        <div class="envelope">
+
+            <div class="letter-title">
+                Para mi niña 💚
+            </div>
+
+            <div class="letter">
+
+                <p>
+                    Amor, hoy cumplimos <span class="highlight">40 meses</span>.
+                    🥺💚
+                </p>
+
+                <p>
+                    Puede sonar simplemente como un número, pero para mí
+                    representa muchísimo más que eso.
+                </p>
+
+                <p>
+                    Son 40 meses de momentos que hemos compartido,
+                    de risas, abrazos, conversaciones, problemas,
+                    reconciliaciones, aventuras y recuerdos que solamente
+                    nosotros conocemos.
+                </p>
+
+                <p>
+                    Hemos cambiado muchísimo desde aquel
+                    <span class="highlight">5 de mayo de 2023</span>.
+                    Hemos crecido, aprendido y también hemos tenido días
+                    que no fueron precisamente los mejores.
+                </p>
+
+                <p>
+                    Y aunque no siempre todo salga perfecto,
+                    hay algo que sigue siendo especial:
+                    <strong>que seguimos escribiendo nuestra historia.</strong>
+                </p>
+
+                <p>
+                    Quiero que sepas que sigo apreciando cada pequeño
+                    momento contigo. Incluso esos momentos simples que
+                    quizás parecen insignificantes, para mí terminan
+                    convirtiéndose en recuerdos que quiero guardar.
+                </p>
+
+                <p>
+                    Gracias por estos <span class="highlight">3 años y 4 meses</span>.
+                    Gracias por formar parte de mi vida y por todas las
+                    cosas bonitas que hemos vivido.
+                </p>
+
+                <p>
+                    Espero que podamos seguir sumando meses,
+                    años y muchísimas historias más.
+                </p>
+
+                <p style="text-align:center;">
+                    Te amo muchísimo. 💚💜🩷
+                </p>
+
+            </div>
+
+
+            <div class="heart">
+                💗
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
 
-  <script>
+    <div class="final-message">
 
-    let participantes = JSON.parse(
-      localStorage.getItem("participantes")
-    ) || [];
+        <h2>
+            Y esto apenas es otro capítulo...
+        </h2>
 
-    const form = document.getElementById("rifaForm");
-    const tabla = document.getElementById("tablaParticipantes");
-    const contador = document.getElementById("contador");
-    const nextNumber = document.getElementById("nextNumber");
+        <p>
+            Feliz 40 meses, mi amor.
+            🐱💚💜🩷
+        </p>
 
-    actualizarNumero();
-    mostrarParticipantes();
+        <button class="love-button" onclick="celebrate()">
+            Toca aquí, gatita 🐱✨
+        </button>
 
-    form.addEventListener("submit", function(e){
+    </div>
 
-      e.preventDefault();
 
-      const nombre = document.getElementById("nombre").value.trim();
-      const telefono = document.getElementById("telefono").value.trim();
-      const cedula = document.getElementById("cedula").value.trim();
+    <footer>
+        Hecho con mucho cariño para ti ♡
+    </footer>
 
-      // Número automático
-      const numero = participantes.length + 1;
+</div>
 
-      participantes.push({
-        numero,
-        nombre,
-        telefono,
-        cedula
-      });
 
-      localStorage.setItem(
-        "participantes",
-        JSON.stringify(participantes)
-      );
+<script>
 
-      form.reset();
+function createHeart() {
 
-      mostrarParticipantes();
-      actualizarNumero();
+    const heart = document.createElement("div");
 
-    });
+    const hearts = ["💚","💜","🩷","💗","✨","🌸","🐱"];
 
-    function mostrarParticipantes(){
+    heart.className = "floating-heart";
 
-      tabla.innerHTML = "";
+    heart.innerHTML =
+        hearts[Math.floor(Math.random() * hearts.length)];
 
-      participantes.forEach((p, index) => {
+    heart.style.left =
+        Math.random() * 100 + "vw";
 
-        tabla.innerHTML += `
+    heart.style.fontSize =
+        (15 + Math.random() * 20) + "px";
 
-          <tr>
+    heart.style.animationDuration =
+        (4 + Math.random() * 4) + "s";
 
-            <td>
-              <strong>#${String(p.numero).padStart(3, '0')}</strong>
-            </td>
+    document.body.appendChild(heart);
 
-            <td>${p.nombre}</td>
+    setTimeout(() => {
+        heart.remove();
+    }, 8000);
+}
 
-            <td>${p.telefono}</td>
 
-            <td>${p.cedula}</td>
+/* Corazones automáticos */
 
-            <td>
+setInterval(createHeart, 900);
 
-              <button
-                class="delete-btn"
-                onclick="eliminarParticipante(${index})"
-              >
-                Eliminar
-              </button>
 
-            </td>
+/* Celebración */
 
-          </tr>
+function celebrate() {
 
-        `;
+    for(let i = 0; i < 25; i++) {
 
-      });
-
-      contador.innerHTML =
-      `Total participantes: ${participantes.length}`;
+        setTimeout(() => {
+            createHeart();
+        }, i * 80);
 
     }
 
-    function actualizarNumero(){
+    const button = document.querySelector(".love-button");
 
-      const siguiente = participantes.length + 1;
+    button.innerHTML = "Te amo muchísimo 🥺💚";
 
-      nextNumber.innerHTML =
-      "#" + String(siguiente).padStart(3, '0');
+    setTimeout(() => {
+        button.innerHTML = "Toca aquí, gatita 🐱✨";
+    }, 3000);
+}
 
-    }
-
-    function eliminarParticipante(index){
-
-      participantes.splice(index,1);
-
-      // Reorganizar números automáticamente
-      participantes = participantes.map((p, i) => ({
-        ...p,
-        numero: i + 1
-      }));
-
-      localStorage.setItem(
-        "participantes",
-        JSON.stringify(participantes)
-      );
-
-      mostrarParticipantes();
-      actualizarNumero();
-
-    }
-
-  </script>
+</script>
 
 </body>
 </html>
