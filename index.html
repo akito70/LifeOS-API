@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -624,117 +624,6 @@ section {
 }
 
 /* =====================================================
-   MUSIC
-===================================================== */
-
-.music-card {
-    max-width: 650px;
-
-    margin: auto;
-
-    padding: 30px;
-
-    border-radius: 35px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.7),
-            rgba(238,224,255,.7)
-        );
-
-    box-shadow: var(--shadow);
-
-    text-align: center;
-}
-
-.music-disc {
-    width: 100px;
-    height: 100px;
-
-    margin: auto;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 45px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--mint),
-            var(--purple),
-            var(--pink)
-        );
-
-    box-shadow:
-        0 15px 35px rgba(100,80,120,.18);
-
-    animation:
-        discSpin 8s linear infinite;
-
-    animation-play-state: paused;
-}
-
-.music-card.playing .music-disc {
-    animation-play-state: running;
-}
-
-@keyframes discSpin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.music-card h3 {
-    margin-top: 20px;
-
-    font-family:
-        "DM Serif Display",
-        serif;
-
-    font-size: 30px;
-}
-
-.music-card p {
-    margin-top: 7px;
-
-    color: var(--text-light);
-
-    font-size: 13px;
-}
-
-.music-button {
-    margin-top: 22px;
-
-    padding: 13px 25px;
-
-    border: none;
-
-    border-radius: 999px;
-
-    cursor: pointer;
-
-    background: var(--mint);
-
-    color: #547e70;
-
-    font-family: inherit;
-
-    font-weight: 700;
-
-    transition: .3s;
-}
-
-.music-button:hover {
-    transform: scale(1.05);
-}
-
-/* =====================================================
    GALLERY
 ===================================================== */
 
@@ -1162,6 +1051,16 @@ section {
 
 <body>
 
+<!-- =====================================================
+     AUDIO
+===================================================== -->
+
+<audio
+    id="song"
+    src="electriclove.mp3"
+    preload="auto"
+></audio>
+
 
 <!-- =====================================================
      INTRO
@@ -1181,7 +1080,7 @@ section {
 
         <p>
             Hice este pequeño detalle para recordarte
-           un poco sobre nuestro amor 
+            un poco sobre nuestro amor 
         </p>
 
         <button
@@ -1238,8 +1137,8 @@ section {
     <p class="hero-description">
 
         Una pequeño detalle para recordar 
-       el amor que siento por ti, y como fue que iniciò
-       esto que ahora compartimos juntos. Te amo 
+        el amor que siento por ti, y como fue que iniciò
+        esto que ahora compartimos juntos. Te amo 
 
     </p>
 
@@ -1267,10 +1166,10 @@ section {
     <p class="section-description">
 
         El día en que me senti el mas afortunado,
-       cuando supe que podria compartir mi vida
-       contigo, el dia en donde nuestras vidas cambiaron 
-       y hasta hoy sigue siendo un dia que recuerdo con 
-       cariño, y he amado poder estar a tu lado.
+        cuando supe que podria compartir mi vida
+        contigo, el dia en donde nuestras vidas cambiaron 
+        y hasta hoy sigue siendo un dia que recuerdo con 
+        cariño, y he amado poder estar a tu lado.
 
     </p>
 
@@ -1308,7 +1207,7 @@ section {
     </div>
 
     <h2 class="section-title">
-      Un poco de uestra historia
+        Un poco de uestra historia
     </h2>
 
     <p class="section-description">
@@ -1345,10 +1244,10 @@ section {
                 desde aproximadamente un año antes.
 
                 Mientras tanto, tú terminabas llamando mi atencion
-               tu personalidad siempre fue algo que e gustó,
-               aun antes de que sintiera algo por ti, 
-               y al final, , mientras mas te obeservaba en silencio 
-               mas sentia que caia enamorandome de ti.
+                tu personalidad siempre fue algo que e gustó,
+                aun antes de que sintiera algo por ti, 
+                y al final, , mientras mas te obeservaba en silencio 
+                mas sentia que caia enamorandome de ti.
 
             </p>
 
@@ -1376,12 +1275,12 @@ section {
 
                 Y quizás fue ahí donde todo comenzó
                 a cambiar poquito a poquito. 
-               Recuerdo bien los nervios cuando me dijeron de ir a tu casa 
-               y aun peor cuando tuve que tomarte de las manos.
-               Fue la primera vez que pude sentir tu calides. 
-               Y pensar en besarte aunque hubiese sido en las manos en la 
-               mejilla, me mataba al saber que queria hacerlo y que ya estaba
-               enamorado de ti. 
+                Recuerdo bien los nervios cuando me dijeron de ir a tu casa 
+                y aun peor cuando tuve que tomarte de las manos.
+                Fue la primera vez que pude sentir tu calides. 
+                Y pensar en besarte aunque hubiese sido en las manos en la 
+                mejilla, me mataba al saber que queria hacerlo y que ya estaba
+                enamorado de ti. 
 
             </p>
 
@@ -1404,12 +1303,13 @@ section {
 
             <p>
 
-            Recuerdo que no podia disimular en lo abosoluto
-               y tu igual de ciega que yo no lo notabas. 
-               No era coincidencia que siempre te pasara el balon.
+                Recuerdo que no podia disimular en lo abosoluto
+                y tu igual de ciega que yo no lo notabas. 
+                No era coincidencia que siempre te pasara el balon.
 
-            Jajsjsjsj y creo que esto es lo mas ramdon en nuestra historia 
-           cuando te pase el balon y me rechazasates!!!!!
+                Jajsjsjsj y creo que esto es lo mas ramdon en nuestra historia 
+                cuando te pase el balon y me rechazasates!!!!!
+
             </p>
 
         </div>
@@ -1431,10 +1331,11 @@ section {
 
             <p>
 
-               pum se me dio por 
-               subir la historia pero en ningun momento se me paso por la cabeza que responderias
-               y quizas el rechazo mas accidental de la historia, pero quien diria que fue lo que 
-               nos hizo acercarnos un poco mas.
+                pum se me dio por 
+                subir la historia pero en ningun momento se me paso por la cabeza que responderias
+                y quizas el rechazo mas accidental de la historia, pero quien diria que fue lo que 
+                nos hizo acercarnos un poco mas.
+
             </p>
 
         </div>
@@ -1464,10 +1365,10 @@ section {
 
                 me di cuenta de que realmente
                 me gustabas y queria segir compartiendo 
-               mas tiempo, risas, y esa felicidad que aun siento 
-               cuando recibo un mensaje tuyo, cuando juego junto a ti, 
-               cuando nos ponemos a hablar cosas que aun no conociamos 
-               y eso especial que se siente cuando estamos tu y yo 
+                mas tiempo, risas, y esa felicidad que aun siento 
+                cuando recibo un mensaje tuyo, cuando juego junto a ti, 
+                cuando nos ponemos a hablar cosas que aun no conociamos 
+                y eso especial que se siente cuando estamos tu y yo 
 
             </p>
 
@@ -1492,18 +1393,18 @@ section {
 
                 Unas semanas después de empezar
                 a hablar, mientras jugabamos quise 
-               decirte lo que sentia por ti, y pude decirte 
-               que me gustabas, aunque quizas ahora tu lo veas extraño,
-               cuando recuerdo lo que senti en ese momento me pongo feiz 
-               nervioso, y un poco nostalgico, cuando me fui a dormir no 
-               me lo podia creer.
+                decirte lo que sentia por ti, y pude decirte 
+                que me gustabas, aunque quizas ahora tu lo veas extraño,
+                cuando recuerdo lo que senti en ese momento me pongo feiz 
+                nervioso, y un poco nostalgico, cuando me fui a dormir no 
+                me lo podia creer.
 
                 Y llegó ese día.
-               Dias despues de saber que tambien sentias algo por mi 
-               no paraba de pensar en lo mucho que queria poder ser 
-               algo mas, poder conocerte mas, poder estar para ti y 
-               compartir mi vida contigo. 
-               ahi fue cuando te pregunté si podiamos ser novios 
+                Dias despues de saber que tambien sentias algo por mi 
+                no paraba de pensar en lo mucho que queria poder ser 
+                algo mas, poder conocerte mas, poder estar para ti y 
+                compartir mi vida contigo. 
+                ahi fue cuando te pregunté si podiamos ser novios 
 
                 Y tú dijiste que sí.
 
@@ -1512,70 +1413,6 @@ section {
             </p>
 
         </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     MUSIC
-===================================================== -->
-
-<section>
-
-    <div class="section-label">
-        Me gustó esta cancion cuando me la mostrastes 
-    </div>
-
-    <h2 class="section-title">
-        Electric Love
-    </h2>
-
-    <p class="section-description">
-
-   Me gusta la parte donde dice: 
-       I can´t let you go now that i go it 
-       me reuerda todo lo que hemos luchado 
-       en estos 40 meses para mantener nuestro amor 
-
-    </p>
-
-
-    <div class="music-card" id="musicCard">
-
-        <div class="music-disc">
-            🎵
-        </div>
-
-        <h3>
-            Electric Love
-        </h3>
-
-        <p>
-            una canción que nos gusta a los dos ♡
-        </p>
-
-        <!--
-            Pon tu archivo de audio aquí:
-            musica/electric-love.mp3
-
-            IMPORTANTE:
-            usa un archivo que tengas permitido utilizar.
-        -->
-
-        <audio
-            id="song"
-            src="electriclove.mp3"
-        ></audio>
-
-        <button
-            class="music-button"
-            onclick="toggleMusic()"
-            id="musicButton"
-        >
-            ▶ Reproducir
-        </button>
 
     </div>
 
@@ -1685,7 +1522,7 @@ section {
             >
 
             <div class="photo-caption">
-                 ♡
+                ♡
             </div>
 
         </div>
@@ -1766,7 +1603,7 @@ section {
             nos hemos equivocado,
             hemos tenido momentos en los que
             parecía más fácil rendirse y dejarlo todo
-           que seguir.
+            que seguir.
 
         </p>
 
@@ -1778,9 +1615,9 @@ section {
             Está hecho de dos personas que,
             a pesar de todo lo que han vivido,
             todavía siguen eligiéndose.
-           Y yo te elijo, aun te sigo eligiendo 
-           a ti, aun sigo enamorado de ti 
-           y Te Amo
+            Y yo te elijo, aun te sigo eligiendo 
+            a ti, aun sigo enamorado de ti 
+            y Te Amo
 
         </small>
 
@@ -1823,7 +1660,7 @@ section {
 
                 Y mientras pensaba en qué podía hacer
                 para este día, terminé pensando en todo lo 
-               que hemos vivido.
+                que hemos vivido.
 
             </p>
 
@@ -1831,47 +1668,48 @@ section {
             <p>
 
                 Es curioso pensar en que nunca conocemos por 
-               completo a una persona. 
+                completo a una persona. 
 
-               A veces me da un poco de miedo pensar en lo que 
-               piensas tu de mi. 
-               Porque aunque llevamos mas de 3 años juntos 
-               cada dia aprendo algo sobre ti aunque sea minimo 
-               y eso es algo que me gusta mucho. 
+                A veces me da un poco de miedo pensar en lo que 
+                piensas tu de mi. 
+                Porque aunque llevamos mas de 3 años juntos 
+                cada dia aprendo algo sobre ti aunque sea minimo 
+                y eso es algo que me gusta mucho. 
 
                 Al principio yo solamente sabía que había algo en ti,
                 especialmente en tu personalidad,
                 que siempre conseguía llamar mi atención.
 
-               pero ahora me doy cuenta de que habian muchas mas cosas en ti 
-               y ahora que conozco un poco mas tu forma de ser, un poco 
-               de tus pensamientos, de tus sueños, de las cosas que has querido 
-               hacer, ahora que conozco un poco de tus gustos, y disgustos, 
-               de tus mañas porque sos bien mañosita, tus rutinas, tus frases 
-               y todas las cosas que he podido ir conociendo de ti en estos 40 meses 
-               me doy cuenta de que eres mucho mas hermosa de lo que podria imaginar 
-               y adoro poder dedicar mi vida a ir conociendote cada dia un poco mas.
+                pero ahora me doy cuenta de que habian muchas mas cosas en ti 
+                y ahora que conozco un poco mas tu forma de ser, un poco 
+                de tus pensamientos, de tus sueños, de las cosas que has querido 
+                hacer, ahora que conozco un poco de tus gustos, y disgustos, 
+                de tus mañas porque sos bien mañosita, tus rutinas, tus frases 
+                y todas las cosas que he podido ir conociendo de ti en estos 40 meses 
+                me doy cuenta de que eres mucho mas hermosa de lo que podria imaginar 
+                y adoro poder dedicar mi vida a ir conociendote cada dia un poco mas.
+
             </p>
 
 
             <p>
 
                 Sabes porque me preocupa un poco lo que pienses de mi? 
-               Es porque yo aun siento que tu eres mi lugar seguro, 
-               aun te veo y siento algo en el estomago cuando quizas 
-               estas haciendo algo y te observo en secreto, aveces simplemente 
-               te veo y me da por sonreir o reirme, porque me da felicidad 
-               poder estar contigo. Y a veces pienso, Sera que ella siente lo mismo?
-               Sera que aun puedo ser su lugar seguro? sera que aun se siente bien 
-               cuando esta conmigo? sera que tambien me ve y se siente feliz de que 
-               sigamos compartieno juntos, y aveces me preocupo un poco. 
-               Hemos pasado muchas cosas, la mayoria fueron mi culpa pero 
-               siempre has seguido luchando por nuestro amor. 
-               Y siempre me has demostrado tu cariño, amo cuando bromeas conmigo. 
-               aunque aveces seas mi mayor hater, me gusta verte feliz cuando estas de hiperactiva
-               y que luego cuando te canses simplemente te arrecuestes a mi. 
-               Siento paz, cuando pudes tambien poner tus cargas, tus problemas y tus emociones, y apoyarte en mi 
-               asi como nos apoyamos juntos. 
+                Es porque yo aun siento que tu eres mi lugar seguro, 
+                aun te veo y siento algo en el estomago cuando quizas 
+                estas haciendo algo y te observo en secreto, aveces simplemente 
+                te veo y me da por sonreir o reirme, porque me da felicidad 
+                poder estar contigo. Y a veces pienso, Sera que ella siente lo mismo?
+                Sera que aun puedo ser su lugar seguro? sera que aun se siente bien 
+                cuando esta conmigo? sera que tambien me ve y se siente feliz de que 
+                sigamos compartieno juntos, y aveces me preocupo un poco. 
+                Hemos pasado muchas cosas, la mayoria fueron mi culpa pero 
+                siempre has seguido luchando por nuestro amor. 
+                Y siempre me has demostrado tu cariño, amo cuando bromeas conmigo. 
+                aunque aveces seas mi mayor hater, me gusta verte feliz cuando estas de hiperactiva
+                y que luego cuando te canses simplemente te arrecuestes a mi. 
+                Siento paz, cuando pudes tambien poner tus cargas, tus problemas y tus emociones, y apoyarte en mi 
+                asi como nos apoyamos juntos. 
 
             </p>
 
@@ -1884,13 +1722,13 @@ section {
                 </span>.
 
                 Estar contigo es algo hermoso, y mas cuando tu siempre estas conmigo, 
-               y sobre todo porque nos queremos ambos. 
-               A veces es dificl pesar que vamos creciendo, y cada vez nuestra 
-               relacion se vuelve mas seria, hay mas compromisos, tenemos mas responsabilidades 
-               y poco a poco va cambiando nuestros horarios, nuestras rutinas, nuestro tiempo para salidas 
-               y muchas cosas mas. 
-            Aun sueño con poder Esperarte un dia en el altar, y verte perfecta con tu vestido blanco
-               y confio en Dios que ese sueño se cumplirá.
+                y sobre todo porque nos queremos ambos. 
+                A veces es dificl pesar que vamos creciendo, y cada vez nuestra 
+                relacion se vuelve mas seria, hay mas compromisos, tenemos mas responsabilidades 
+                y poco a poco va cambiando nuestros horarios, nuestras rutinas, nuestro tiempo para salidas 
+                y muchas cosas mas. 
+                Aun sueño con poder Esperarte un dia en el altar, y verte perfecta con tu vestido blanco
+                y confio en Dios que ese sueño se cumplirá.
 
             </p>
 
@@ -1898,11 +1736,11 @@ section {
             <p>
 
                 Poco a poco voy aprendiendo, me gusta que me enseñes cosas 
-               nuevas y me gusta cuando puedo enseñarte algo a ti tambien 
-               siento que es lo que hacen las parejas, crecer juntos, 
-               y me ha gustado como en estos ultimos meses hemos crecido 
-               un poco y alcanzado algunas metas econmicas, tambien hemos mejorado
-               muchas cosas. 
+                nuevas y me gusta cuando puedo enseñarte algo a ti tambien 
+                siento que es lo que hacen las parejas, crecer juntos, 
+                y me ha gustado como en estos ultimos meses hemos crecido 
+                un poco y alcanzado algunas metas econmicas, tambien hemos mejorado
+                muchas cosas. 
 
             </p>
 
@@ -1924,16 +1762,13 @@ section {
             <p>
 
                 HOy te agradezco el privilegio de amarte, y la felicidad que me das al darme tu amor, 
-               quiero seguir creciendo a tu lado, viviendo a tu lado, y amando a tu lado.
-               quiero poder tratarte como a una princesa,que siga siendo tu lugar seguro y no solo por meses
-               si no toda una eternidad. TE AMO, Y deseo hacerte muy feliz. Gracias por compartir conmigo 3 años y 4 meses 
+                quiero seguir creciendo a tu lado, viviendo a tu lado, y amando a tu lado.
+                quiero poder tratarte como a una princesa,que siga siendo tu lugar seguro y no solo por meses
+                si no toda una eternidad. TE AMO, Y deseo hacerte muy feliz. Gracias por compartir conmigo 3 años y 4 meses 
 
             </p>
 
 
-          
-
-     
             <p>
 
                 Porque después de 40 meses,
@@ -2036,11 +1871,30 @@ function startExperience() {
     const main =
         document.getElementById("main");
 
+    const song =
+        document.getElementById("song");
+
     intro.classList.add("hide");
 
     setTimeout(() => {
         main.classList.add("show");
     }, 500);
+
+    /*
+       Iniciar la canción desde el principio.
+
+       Como esto ocurre después del clic del usuario
+       en "Abrir sorpresa", el navegador permite
+       normalmente la reproducción.
+    */
+
+    song.currentTime = 0;
+
+    song.play().catch(() => {
+        console.log(
+            "El navegador bloqueó la reproducción automática."
+        );
+    });
 
     /* lluvia inicial */
 
@@ -2052,68 +1906,6 @@ function startExperience() {
 
     }
 }
-
-
-/* =====================================================
-   MUSICA
-===================================================== */
-
-const song =
-    document.getElementById("song");
-
-const musicCard =
-    document.getElementById("musicCard");
-
-const musicButton =
-    document.getElementById("musicButton");
-
-
-function toggleMusic() {
-
-    /*
-       Si todavía no colocaste
-       el archivo MP3, el navegador
-       mostrará un error.
-    */
-
-    if(song.paused) {
-
-        song.play()
-        .then(() => {
-
-            musicCard.classList.add("playing");
-
-            musicButton.innerHTML =
-                "❚❚ Pausar";
-
-        })
-        .catch(() => {
-
-            musicButton.innerHTML =
-                "⚠ Agrega la canción";
-
-        });
-
-    } else {
-
-        song.pause();
-
-        musicCard.classList.remove("playing");
-
-        musicButton.innerHTML =
-            "▶ Reproducir";
-    }
-}
-
-
-song.addEventListener("ended", () => {
-
-    musicCard.classList.remove("playing");
-
-    musicButton.innerHTML =
-        "▶ Reproducir";
-
-});
 
 
 /* =====================================================
@@ -2220,7 +2012,7 @@ const observer =
 
 document
     .querySelectorAll(
-        ".story-card, .counter-box, .music-card, .quote-card, .letter-container, .photo"
+        ".story-card, .counter-box, .quote-card, .letter-container, .photo"
     )
     .forEach(element => {
 
