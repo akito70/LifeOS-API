@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0f"
+    >
+
+    <title>Jr Connection · Lista de precios</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Fuente -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- TU CSS -->
+    <link rel="stylesheet" href="jr_style.css">
+
+</head>
+
+
+<body>
+
+<div class="app-shell">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="bi bi-phone"></i>
+            </div>
+
+            <div>
+                <strong>Jr Connection</strong>
+                <span>Lista de precios</span>
+            </div>
+
+        </div>
+
+
+        <nav class="side-nav">
+
+            <button
+                class="nav-item active"
+                type="button"
+                onclick="scrollToCatalog()"
+            >
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Catálogo</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                type="button"
+                onclick="openAdmin()"
+            >
+                <i class="bi bi-sliders2"></i>
+                <span>Administrar precios</span>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <div class="sync-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>Datos locales</strong>
+
+                    <small id="lastUpdate">
+                        Sin actualizar
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <small class="version">
+                Jr Price Desk · v2
+            </small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+         ===================================================== -->
+
+    <main
+        class="main-content"
+        id="catalog"
+    >
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="eyebrow">
+
+                    <span></span>
+
+                    CONSULTA PARA VENDEDORES
+
+                </div>
+
+
+                <h1>
+                    Precios de teléfonos
+                </h1>
+
+
+                <p>
+                    Consulta rápidamente los modelos disponibles
+                    y comparte el precio con el cliente.
+                </p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    type="button"
+                    title="Actualizar vista"
+                    onclick="render()"
+                >
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+
+
+                <button
+                    class="admin-btn"
+                    type="button"
+                    onclick="openAdmin()"
+                >
+                    <i class="bi bi-lock"></i>
+
+                    Administrar
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             ESTADÍSTICAS
+             ================================================= -->
+
+        <section class="quick-stats">
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+
+                    <i class="bi bi-phone"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Modelos
+                    </span>
+
+                    <strong id="modelCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div class="stat-icon green">
+
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Unidades disponibles
+                    </span>
+
+                    <strong id="unitCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div class="stat-icon purple">
+
+                    <i class="bi bi-tag"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Marcas
+                    </span>
+
+                    <strong id="brandCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CATÁLOGO
+             ================================================= -->
+
+        <section class="catalog-panel">
+
+
+            <!-- BUSCADOR Y FILTROS -->
+
+            <div class="catalog-toolbar">
+
+
+                <div class="search-wrap">
+
+                    <i class="bi bi-search"></i>
+
+
+                    <input
+                        id="searchInput"
+                        type="search"
+                        placeholder="Buscar iPhone 13, A55, 256 GB, color..."
+                        autocomplete="off"
+                    >
+
+
+                    <kbd>
+                        Ctrl K
+                    </kbd>
+
+                </div>
+
+
+
+                <div class="filters">
+
+
+                    <select
+                        id="brandFilter"
+                        aria-label="Filtrar por marca"
+                    >
+
+                        <option value="all">
+                            Todas las marcas
+                        </option>
+
+                    </select>
+
+
+
+                    <select
+                        id="availabilityFilter"
+                        aria-label="Filtrar disponibilidad"
+                    >
+
+                        <option value="available">
+                            Disponibles
+                        </option>
+
+                        <option value="all">
+                            Todos
+                        </option>
+
+                        <option value="out">
+                            Agotados
+                        </option>
+
+                    </select>
+
+
+
+                    <select
+                        id="sortFilter"
+                        aria-label="Ordenar"
+                    >
+
+                        <option value="default">
+                            Orden original
+                        </option>
+
+                        <option value="priceLow">
+                            Precio menor
+                        </option>
+
+                        <option value="priceHigh">
+                            Precio mayor
+                        </option>
+
+                        <option value="name">
+                            Modelo A-Z
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESULTADOS -->
+
+            <div class="result-bar">
+
+                <span id="resultText">
+                    0 modelos
+                </span>
+
+
+                <button
+                    type="button"
+                    class="clear-btn"
+                    id="clearSearch"
+                    hidden
+                >
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Limpiar búsqueda
+
+                </button>
+
+            </div>
+
+
+
+            <!-- PRODUCTOS -->
+
+            <div
+                id="productGrid"
+                class="product-grid"
+            ></div>
+
+
+
+            <!-- SIN RESULTADOS -->
+
+            <div
+                id="emptyState"
+                class="empty-state"
+                hidden
+            >
+
+                <div class="empty-icon">
+
+                    <i class="bi bi-search"></i>
+
+                </div>
+
+
+                <h3>
+                    No encontramos ese modelo
+                </h3>
+
+
+                <p>
+                    Prueba con otro nombre, marca,
+                    capacidad o color.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <footer class="page-footer">
+
+            <span>
+
+                <i class="bi bi-shield-check"></i>
+
+                Los vendedores consultan;
+                solo administración modifica precios.
+
+            </span>
+
+
+            <span id="footerDate"></span>
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL ADMINISTRACIÓN
+     ========================================================= -->
+
+<div
+    class="modal fade"
+    id="adminModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="modal-dialog modal-dialog-centered modal-xl"
+    >
+
+        <div class="modal-content admin-modal">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <div class="modal-kicker">
+                        MODO ADMINISTRADOR
+                    </div>
+
+
+                    <h2>
+                        Gestionar precios
+                    </h2>
+
+
+                    <p>
+                        Actualiza precios,
+                        existencias y datos del catálogo.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+
+            <div class="modal-body">
+
+
+                <!-- =========================================
+                     PIN
+                     ========================================= -->
+
+                <div
+                    id="pinView"
+                    class="pin-view"
+                >
+
+                    <div class="pin-icon">
+
+                        <i class="bi bi-shield-lock"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Acceso administrativo
+                    </h3>
+
+
+                    <p>
+                        Introduce el PIN para modificar
+                        el catálogo.
+                    </p>
+
+
+                    <div class="pin-input-wrap">
+
+                        <input
+                            id="adminPin"
+                            type="password"
+                            inputmode="numeric"
+                            maxlength="8"
+                            placeholder="PIN"
+                            autocomplete="off"
+                        >
+
+
+                        <button
+                            type="button"
+                            onclick="togglePin()"
+                        >
+
+                            <i class="bi bi-eye"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn full"
+                        type="button"
+                        onclick="unlockAdmin()"
+                    >
+
+                        <i class="bi bi-unlock"></i>
+
+                        Entrar
+
+                    </button>
+
+
+                    <small
+                        id="pinError"
+                        class="pin-error"
+                    ></small>
+
+
+                    <small class="security-note">
+
+                        El PIN es una protección contra
+                        cambios accidentales, no un sistema
+                        de seguridad de servidor.
+
+                    </small>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     ADMINISTRACIÓN
+                     ========================================= -->
+
+                <div
+                    id="adminView"
+                    hidden
+                >
+
+
+                    <div class="admin-toolbar">
+
+
+                        <div class="admin-search">
+
+                            <i class="bi bi-search"></i>
+
+
+                            <input
+                                id="adminSearch"
+                                type="search"
+                                placeholder="Buscar producto para editar..."
+                            >
+
+                        </div>
+
+
+
+                        <div class="admin-actions">
+
+
+                            <button
+                                class="secondary-btn"
+                                type="button"
+                                onclick="exportData()"
+                            >
+
+                                <i class="bi bi-download"></i>
+
+                                Respaldo
+
+                            </button>
+
+
+
+                            <label
+                                class="secondary-btn file-btn"
+                            >
+
+                                <i class="bi bi-upload"></i>
+
+                                Importar
+
+
+                                <input
+                                    type="file"
+                                    id="importFile"
+                                    accept="application/json"
+                                    hidden
+                                >
+
+                            </label>
+
+
+
+                            <button
+                                class="primary-btn"
+                                type="button"
+                                onclick="openProductForm()"
+                            >
+
+                                <i class="bi bi-plus-lg"></i>
+
+                                Nuevo
+
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- TABLA -->
+
+                    <div class="table-wrap">
+
+                        <table class="admin-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Modelo
+                                    </th>
+
+                                    <th>
+                                        Color
+                                    </th>
+
+                                    <th>
+                                        Capacidad
+                                    </th>
+
+                                    <th>
+                                        Batería
+                                    </th>
+
+                                    <th>
+                                        Stock
+                                    </th>
+
+                                    <th>
+                                        Precio
+                                    </th>
+
+                                    <th></th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="adminTable"></tbody>
+
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL PRODUCTO
+     ========================================================= -->
+
+<div
+    class="modal fade"
+    id="productModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="modal-dialog modal-dialog-centered"
+    >
+
+        <div class="modal-content admin-modal">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <div class="modal-kicker">
+                        CATÁLOGO
+                    </div>
+
+
+                    <h2 id="productModalTitle">
+                        Nuevo teléfono
+                    </h2>
+
+
+                    <p>
+                        Los cambios se guardan
+                        en este dispositivo.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+
+            <div class="modal-body">
+
+
+                <input
+                    type="hidden"
+                    id="productId"
+                >
+
+
+                <div class="form-grid">
+
+
+                    <!-- MARCA -->
+
+                    <label>
+
+                        Marca
+
+
+                        <select id="productBrand">
+
+                            <option>
+                                Apple
+                            </option>
+
+                            <option>
+                                Samsung
+                            </option>
+
+                            <option>
+                                Xiaomi
+                            </option>
+
+                            <option>
+                                Motorola
+                            </option>
+
+                            <option>
+                                Infinix
+                            </option>
+
+                            <option>
+                                Tecno
+                            </option>
+
+                            <option>
+                                Oppo
+                            </option>
+
+                            <option>
+                                Honor
+                            </option>
+
+                            <option>
+                                Otro
+                            </option>
+
+                        </select>
+
+                    </label>
+
+
+
+                    <!-- MODELO -->
+
+                    <label>
+
+                        Modelo
+
+
+                        <input
+                            id="productModel"
+                            type="text"
+                            placeholder="Ej. iPhone 13 Pro Max"
+                        >
+
+                    </label>
+
+
+
+                    <!-- COLOR -->
+
+                    <label>
+
+                        Color
+
+
+                        <input
+                            id="productColor"
+                            type="text"
+                            placeholder="Ej. Graphite"
+                        >
+
+                    </label>
+
+
+
+                    <!-- ALMACENAMIENTO -->
+
+                    <label>
+
+                        Almacenamiento
+
+
+                        <select id="productStorage">
+
+                            <option>
+                                32 GB
+                            </option>
+
+                            <option>
+                                64 GB
+                            </option>
+
+                            <option>
+                                128 GB
+                            </option>
+
+                            <option>
+                                256 GB
+                            </option>
+
+                            <option>
+                                512 GB
+                            </option>
+
+                            <option>
+                                1 TB
+                            </option>
+
+                        </select>
+
+                    </label>
+
+
+
+                    <!-- BATERÍA -->
+
+                    <label>
+
+                        Batería %
+
+
+                        <input
+                            id="productBattery"
+                            type="number"
+                            min="0"
+                            max="100"
+                            placeholder="Vacío en Android"
+                        >
+
+                    </label>
+
+
+
+                    <!-- STOCK -->
+
+                    <label>
+
+                        Stock
+
+
+                        <input
+                            id="productQuantity"
+                            type="number"
+                            min="0"
+                            step="1"
+                            value="1"
+                        >
+
+                    </label>
+
+
+
+                    <!-- PRECIO -->
+
+                    <label class="full-field">
+
+                        Precio de venta
+
+
+                        <div class="money-input">
+
+                            <span>
+                                C$
+                            </span>
+
+
+                            <input
+                                id="productPrice"
+                                type="number"
+                                min="0"
+                                step="50"
+                            >
+
+                        </div>
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+
+                <button
+                    class="secondary-btn"
+                    data-bs-dismiss="modal"
+                >
+
+                    Cancelar
+
+                </button>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="saveProduct()"
+                >
+
+                    <i class="bi bi-check-lg"></i>
+
+                    Guardar
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     BOOTSTRAP JS
+     ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<!-- =========================================================
+     TU JAVASCRIPT
+     ========================================================= -->
+
+<script src="jr_app.js"></script>
+
+
+</body>
+
+</html>
